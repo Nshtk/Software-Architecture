@@ -100,6 +100,32 @@ workspace {
             workspace.views.views.findAll { it instanceof com.structurizr.view.ModelView }.each { it.enableAutomaticLayout() }
         }
 
+		systemLandscape "Landscape" {
+			include *
+			autoLayout
+		}
+
+		/*systemContext service "Main"		//Views not working?
+		{
+			include service
+			autoLayout
+		}
+		systemContext accommodation "Accomodation" 
+		{
+			include accommodation
+			autoLayout
+		}
+		deployment service "Service"
+		{
+			include *
+			autoLayout
+		}
+		container user_service "User_service"
+		{
+			include user_service
+			autoLayout
+		}*/
+
         dynamic service "UC01" "Добавление нового пользователя" {
             autoLayout
             user -> service.user_service "Создать нового пользователя (Swagger POST /user)"
