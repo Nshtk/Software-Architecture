@@ -35,7 +35,7 @@ workspace {
                 }
                 user_cache = container "User Cache" {
                     description "Кеш пользовательских данных для ускорения аутентификации"
-                    technology "PostgreSQL 15"
+                    technology "Redis"
                     tags "database"
                 }
                 accommodation_database = container "Accommodation Database" {
@@ -51,7 +51,8 @@ workspace {
 			order_service -> accommodation_database "Получение/обновление данных о заказе" "TCP 6545"
 
             user -> user_service "Регистрация/аутентификация пользователя" "REST HTTP:8080"
-            accommodation -> accommodation_service "Создание услуги" "REST HTTP:8081"
+			user -> accommodation_service "Создание услуги" "REST HTTP:8080"
+            accommodation -> accommodation_service "Обновление услуг" "REST HTTP:8081"
 
             order_service -> accommodation_service "Добавление услуг в заказ"
 			user_service -> order_service "Получение заказа для пользователя"
@@ -140,7 +141,7 @@ workspace {
         }
         dynamic service "UC03" "Создание услуги" {
             autoLayout
-            accommodation -> service.accommodation_service "Создать новую услугу (POST /accomodation)"
+            user -> service.accommodation_service "Создать новую услугу (POST /accomodation)"
             service.accommodation_service -> service.accommodation_database "Сохранить данные об услуге"
         }
         dynamic service "UC04" "Получение списка услуг" {

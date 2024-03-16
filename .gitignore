@@ -157,3 +157,4 @@ structurizr_on_premises/onpremises/*
 .DS_Store
 /arch_lecture_examples
 /.vscode
+/lab1/.structurizr
