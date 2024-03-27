@@ -6,4 +6,4 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - ./lab1:/usr/local/structurizr:z
+      - .:/usr/local/structurizr:z
