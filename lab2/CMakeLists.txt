@@ -1,31 +1,33 @@
-cmake_minimum_required(VERSION 3.0.0)
-project(lab2 VERSION 0.1.0)
+cmake_minimum_required(VERSION 3.2)
 
-set(SRC_LIST 	Services/UserService/Core/main.cpp
-				Services/UserService/Database/database.cpp
-				Services/UserService/Database/user.cpp)
+SET (EXAMPLE_BINARY "lab2")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++20 -Wall")
+find_package(OpenSSL)
+find_package(Threads)
+find_package(Poco REQUIRED COMPONENTS Foundation Util Net XML JSON Crypto NetSSL Data JWT MongoDB)
 
-include_directories(C:\\Users\\Root\\Documents\\GitHub\\Labs\\SA\\poco-1.13.2-all\\ActiveRecord\\include)
-include_directories(C:\\Users\\Root\\Documents\\GitHub\\Labs\\SA\\poco-1.13.2-all\\MongoDB\\include)
-include_directories(C:\\Users\\Root\\Documents\\GitHub\\Labs\\SA\\poco-1.13.2-all\\Prometheus\\include)
-include_directories(C:\\Users\\Root\\Documents\\GitHub\\Labs\\SA\\poco-1.13.2-all\\Redis\\include)
-include_directories(C:\\Users\\Root\\Documents\\GitHub\\Labs\\SA\\poco-1.13.2-all\\Zip\\include)
-include_directories(C:\\Users\\Root\\Documents\\GitHub\\Labs\\SA\\poco-1.13.2-all\\Crypto\\include)
-include_directories(C:\\Users\\Root\\Documents\\GitHub\\Labs\\SA\\poco-1.13.2-all\\Data\\include)
-include_directories(C:\\Users\\Root\\Documents\\GitHub\\Labs\\SA\\poco-1.13.2-all\\JWT\\include)
-include_directories(C:\\Users\\Root\\Documents\\GitHub\\Labs\\SA\\poco-1.13.2-all\\Net\\include)
-include_directories(C:\\Users\\Root\\Documents\\GitHub\\Labs\\SA\\poco-1.13.2-all\\NetSSL_OpenSSL\\include)
-include_directories(C:\\Users\\Root\\Documents\\GitHub\\Labs\\SA\\poco-1.13.2-all\\CppUnit\\include)
-include_directories(C:\\Users\\Root\\Documents\\GitHub\\Labs\\SA\\poco-1.13.2-all\\Encodings\\include)
-include_directories(C:\\Users\\Root\\Documents\\GitHub\\Labs\\SA\\poco-1.13.2-all\\Foundation\\include)
-include_directories(C:\\Users\\Root\\Documents\\GitHub\\Labs\\SA\\poco-1.13.2-all\\JSON\\include)
-include_directories(C:\\Users\\Root\\Documents\\GitHub\\Labs\\SA\\poco-1.13.2-all\\Util\\include)
-include_directories(C:\\Users\\Root\\Documents\\GitHub\\Labs\\SA\\poco-1.13.2-all\\XML\\include)
-include_directories(C:\\Users\\Root\\Documents\\GitHub\\Labs\\SA\\poco-1.13.2-all\\openssl\\build\\include)
-link_directories(C:\\Users\\Root\\Documents\\GitHub\\Labs\\SA\\poco\\lib)
-add_executable(lab2 ${SRC_LIST} )
+if(NOT ${Poco_FOUND})
+    message(FATAL_ERROR "Poco C++ Libraries not found.")
+endif()
 
-#find_package(Poco REQUIRED Foundation)
-#target_link_libraries(lab2 PRIVATE Poco::Foundation)
+include_directories(${Poco_INCLUDE_DIRS})
+
+
+SET(CMAKE_CXX_STANDARD 17)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+add_executable(${EXAMPLE_BINARY} 	Services/UserService/Core/main.cpp
+									Services/UserService/Config/config.cpp
+									Services/UserService/Database/database.cpp
+									Services/UserService/Database/user.cpp)
+
+
+target_include_directories(${EXAMPLE_BINARY} PRIVATE "${CMAKE_BINARY_DIR}")
+target_compile_options(${EXAMPLE_BINARY} PRIVATE -Wall -Wextra -pedantic)
+set_target_properties(${EXAMPLE_BINARY} PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(${EXAMPLE_BINARY} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+
+target_link_libraries(${EXAMPLE_BINARY} PRIVATE 
+                             ${CMAKE_THREAD_LIBS_INIT} 
+                             ${Poco_LIBRARIES}
+                             "PocoDataPostgreSQL")

@@ -19,6 +19,7 @@
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
 #include <iostream>
+#include "handlers/user_handler.h"
 
 using Poco::Net::ServerSocket;
 using Poco::Net::HTTPRequestHandler;

@@ -3,9 +3,11 @@ services:
   lab_02_user:
     tty: true
     container_name: lab_02_user
+    volumes:
+      - ./lab2:/opt/lab2
     build:
       context: .
-      dockerfile: lab_02_dockerfile
+      dockerfile: Dockerfile
     environment:
       - DB_HOST=lab02_postgres
       - DB_PORT=5432
@@ -27,7 +29,7 @@ services:
     container_name: lab_02_pizza
     build:
       context: .
-      dockerfile: lab_02_dockerfile
+      dockerfile: Dockerfile
     environment:
       - DB_HOST=lab02_postgres
       - DB_PORT=5432

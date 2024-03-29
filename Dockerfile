@@ -24,6 +24,8 @@ RUN git clone -b poco-1.12.4-release https://github.com/pocoproject/poco.git &&\
     cd && rm poco/* -rf 
 
 RUN ldconfig
-ADD ./hl_mai_lab_02 /hl_mai_lab_02
-RUN cd /hl_mai_lab_02 && mkdir build && cd build && cmake  .. && make
-ENTRYPOINT [ "/hl_mai_lab_02/build/hl_mai_lab_02" ]
+
+WORKDIR /opt
+ADD ./lab2 /lab2
+RUN cd /lab2 && cd build && cmake  .. && make
+ENTRYPOINT [ "/lab2/build/lab2" ]

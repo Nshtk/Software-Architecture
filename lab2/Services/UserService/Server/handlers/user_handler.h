@@ -19,7 +19,7 @@
 #include "Poco/Util/Option.h"
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
-#include "../../database/user.h"
+#include "../../Database/user.h"
 #include "../../helper.h"
 #include <iostream>
 #include <iostream>
