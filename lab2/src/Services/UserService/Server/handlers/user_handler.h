@@ -1,6 +1,10 @@
 #ifndef USEHANDLER_H
 #define USEHANDLER_H
 
+#include <iostream>
+#include <iostream>
+#include <fstream>
+
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
 #include "Poco/Net/HTTPRequestHandlerFactory.h"
@@ -19,11 +23,9 @@
 #include "Poco/Util/Option.h"
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
+
 #include "../../Database/user.h"
-#include "../../helper.h"
-#include <iostream>
-#include <iostream>
-#include <fstream>
+#include "../helper.h"
 
 using Poco::DateTimeFormat;
 using Poco::DateTimeFormatter;

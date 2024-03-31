@@ -1,10 +1,7 @@
 FROM mcr.microsoft.com/devcontainers/cpp:1-ubuntu-22.04
 
-ARG REINSTALL_CMAKE_VERSION_FROM_SOURCE="3.22.2"
-
-# Optionally install the cmake for vcpkg
 COPY ./reinstall-cmake.sh /tmp/
-
+ARG REINSTALL_CMAKE_VERSION_FROM_SOURCE="3.22.2"
 RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
         chmod +x /tmp/reinstall-cmake.sh && /tmp/reinstall-cmake.sh ${REINSTALL_CMAKE_VERSION_FROM_SOURCE}; \
     fi \
@@ -19,13 +16,15 @@ RUN git clone -b poco-1.12.4-release https://github.com/pocoproject/poco.git &&\
     mkdir cmake-build &&\
     cd cmake-build &&\
     cmake .. &&\
-    cmake --build . --config Release &&\
-    cmake --build . --target install &&\
+    cmake --build . --config Release -- -j 12 &&\
+    cmake --build . --target install -- -j 12 &&\
     cd && rm poco/* -rf 
-
 RUN ldconfig
 
 WORKDIR /opt
-ADD ./lab2 /lab2
-RUN cd /lab2 && cd build && cmake  .. && make
-ENTRYPOINT [ "/lab2/build/lab2" ]
+RUN mkdir -p ./lab2/build && mkdir -p ./lab2/src
+COPY ./src ./lab2/src
+RUN cmake -B ./lab2/build -S ./lab2/src
+RUN make -C ./lab2/build
+ENTRYPOINT [ "./lab2/build/lab2" ]
+#ENTRYPOINT ["tail", "-f", "/dev/null" ]

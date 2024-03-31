@@ -1,6 +1,7 @@
 #ifndef HTTPREQUESTFACTORY_H
 #define HTTPREQUESTFACTORY_H
 
+#include <iostream>
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
 #include "Poco/Net/HTTPRequestHandlerFactory.h"
@@ -18,7 +19,7 @@
 #include "Poco/Util/Option.h"
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
-#include <iostream>
+
 #include "handlers/user_handler.h"
 
 using Poco::Net::ServerSocket;
