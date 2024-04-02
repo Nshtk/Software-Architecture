@@ -16,12 +16,10 @@ using Poco::Data::Statement;
 
 namespace database
 {
-
     void User::init()
     {
         try
         {
-
             Poco::Data::Session session = database::Database::get().create_session();
             Statement create_stmt(session);
             create_stmt << "CREATE TABLE IF NOT EXISTS users (id SERIAL,"

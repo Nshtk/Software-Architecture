@@ -41,28 +41,28 @@ CREATE TABLE IF NOT EXISTS public."Order"
         NOT VALID
 );
 
---INSERT INTO public."User" (login, password, first_name, last_name, email) VALUES
---('sample_login_1', '12345678', 'Sample First Name 1', 'Sample Last Name 1', 'sample_1@mail.ru'),
---('sample_login_2', '123456789', 'Sample First Name 2', 'Sample Last Name 2', 'sample_2@mail.ru'),
---('sample_login_3', '1234567891', 'Sample First Name 3', 'Sample Last Name 3', 'sample_3@mail.ru'),
---('sample_login_4', '12345678912', 'Sample First Name 4', 'Sample Last Name 4', 'sample_4@mail.ru'),
---('sample_login_5', '123456789123', 'Sample First Name 5', 'Sample Last Name 5', 'sample_5@mail.ru');
+INSERT INTO public."User" (login, password, first_name, last_name, email) VALUES
+('sample_login_1', '12345678', 'Sample First Name 1', 'Sample Last Name 1', 'sample_1@mail.ru'),
+('sample_login_2', '123456789', 'Sample First Name 2', 'Sample Last Name 2', 'sample_2@mail.ru'),
+('sample_login_3', '1234567891', 'Sample First Name 3', 'Sample Last Name 3', 'sample_3@mail.ru'),
+('sample_login_4', '12345678912', 'Sample First Name 4', 'Sample Last Name 4', 'sample_4@mail.ru'),
+('sample_login_5', '123456789123', 'Sample First Name 5', 'Sample Last Name 5', 'sample_5@mail.ru');
 
---INSERT INTO public."Accommodation" (name, description, price, deadline) VALUES
---('Sample accommodation 1', 'Sample accommodation description 1', 100, '2024-03-01'),
---('Sample accommodation 2', 'Sample accommodation description 2', 200, '2024-03-02'),
---('Sample accommodation 3', 'Sample accommodation description 3', 300, '2024-03-03');
+INSERT INTO public."Accommodation" (name, description, price, deadline) VALUES
+('Sample accommodation 1', 'Sample accommodation description 1', 100, '2024-03-01'),
+('Sample accommodation 2', 'Sample accommodation description 2', 200, '2024-03-02'),
+('Sample accommodation 3', 'Sample accommodation description 3', 300, '2024-03-03');
 
---INSERT INTO public."Order" (user_id, accommodation_id) VALUES
---( 1, 1),
---( 1, 2),
---( 2, 1),
---( 3, 2),
---( 3, 3),
---( 4, 1),
---( 4, 2),
---( 4, 3),
---( 5, 3),
+INSERT INTO public."Order" (user_id, accommodation_id) VALUES
+( 1, 1),
+( 1, 2),
+( 2, 1),
+( 3, 2),
+( 3, 3),
+( 4, 1),
+( 4, 2),
+( 4, 3),
+( 5, 3),
 
 SELECT * FROM User;
 SELECT * FROM Accommodation;

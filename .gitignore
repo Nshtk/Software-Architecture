@@ -183,3 +183,4 @@ structurizr_on_premises/onpremises/*
 .DS_Store
 /.vscode
 /lab1/.structurizr
+/.libraries

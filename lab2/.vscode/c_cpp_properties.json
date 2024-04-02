@@ -1,0 +1,31 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "/opt/lab2/**",
+                "/usr/local/include/",
+                "/usr/local/include/Poco",
+                "/usr/include/"
+            ],
+            "defines": [],
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "macos-gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "compilerPathInCppPropertiesJson": "/usr/bin/clang++",
+            "mergeConfigurations": false,
+            "browse": {
+                "path": [
+                    "/opt/lab2/**",
+                    "/usr/local/include/",
+                    "/usr/local/include/Poco",
+                    "/usr/include/",
+                    "${workspaceFolder}"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
+        }
+    ],
+    "version": 4
+}

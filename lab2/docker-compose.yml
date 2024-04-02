@@ -6,6 +6,7 @@ services:
     container_name: user_service
     volumes:
       - ./src:/opt/lab2/src
+      - ./.vscode:/opt/lab2/.vscode
     build:
       context: .
       dockerfile: Dockerfile

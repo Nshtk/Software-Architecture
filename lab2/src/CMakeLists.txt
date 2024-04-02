@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.2)
 
+project(lab2)
 SET (LAB2_BINARY "lab2")
+
+SET(CMAKE_CXX_STANDARD 17)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(OpenSSL)
 find_package(Threads)
@@ -11,10 +15,6 @@ if(NOT ${Poco_FOUND})
 endif()
 
 include_directories(${Poco_INCLUDE_DIRS})
-
-
-SET(CMAKE_CXX_STANDARD 17)
-SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(${LAB2_BINARY} 		../src/Services/UserService/Core/main.cpp
 									../src/Services/UserService/Config/config.cpp
