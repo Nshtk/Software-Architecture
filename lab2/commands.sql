@@ -1,10 +1,10 @@
---CREATE USER service_admin;
---CREATE DATABASE sa-accommodation-service;
---GRANT ALL PRIVILEGES ON DATABASE sa-accommodation-service TO service_admin;
+DROP TABLE IF EXISTS public."User";
+DROP TABLE IF EXISTS public."Accommodation";
+DROP TABLE IF EXISTS public."Order";
 
 CREATE TABLE IF NOT EXISTS public."User"
 (
-    id integer NOT NULL DEFAULT nextval('"User_id_seq"'::regclass),
+    id serial NOT NULL,
     login character varying COLLATE pg_catalog."default" NOT NULL,
     password character varying COLLATE pg_catalog."default" NOT NULL,
     first_name character varying COLLATE pg_catalog."default" NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS public."User"
 );
 CREATE TABLE IF NOT EXISTS public."Accommodation"
 (
-    id integer NOT NULL DEFAULT nextval('"Accommodation_id_seq"'::regclass),
+    id serial NOT NULL,
     name character varying COLLATE pg_catalog."default" NOT NULL,
     description character varying COLLATE pg_catalog."default" NOT NULL,
     price integer,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS public."Accommodation"
 );
 CREATE TABLE IF NOT EXISTS public."Order"
 (
-    id integer NOT NULL DEFAULT nextval('"Order_id_seq"'::regclass),
+    id serial NOT NULL,
     user_id integer NOT NULL,
     accommodation_id integer NOT NULL,
     CONSTRAINT "Order_pkey" PRIMARY KEY (id),

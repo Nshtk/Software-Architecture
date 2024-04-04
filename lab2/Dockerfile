@@ -26,5 +26,5 @@ RUN mkdir -p ./lab2/build && mkdir -p ./lab2/src
 COPY ./src ./lab2/src
 RUN cmake -B ./lab2/build -S ./lab2/src
 RUN make -C ./lab2/build
-ENTRYPOINT [ "./lab2/build/lab2" ]
-#ENTRYPOINT ["tail", "-f", "/dev/null" ]
+#ENTRYPOINT [ "./lab2/build/lab2" ]
+ENTRYPOINT ["tail", "-f", "/dev/null" ]

@@ -42,9 +42,11 @@ using Poco::Util::HelpFormatter;
 
 class HTTPRequestFactory: public HTTPRequestHandlerFactory
 {
+private:
+    std::string _format;
 public:
     HTTPRequestFactory(const std::string& format):  _format(format)
-    { }
+    {}
 
     HTTPRequestHandler* createRequestHandler(const HTTPServerRequest& request)
     {
@@ -53,9 +55,6 @@ public:
             return new UserHandler(_format);
         return 0;
     }
-
-private:
-    std::string _format;
 };
 
 #endif

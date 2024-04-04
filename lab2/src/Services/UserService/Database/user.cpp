@@ -20,8 +20,8 @@ namespace database
     {
         try
         {
-            Poco::Data::Session session = database::Database::get().create_session();
-            Statement create_stmt(session);
+            Poco::Data::Session session = database::Database::get().create_session();		//REVIEW
+            /*Statement create_stmt(session);
             create_stmt << "CREATE TABLE IF NOT EXISTS users (id SERIAL,"
                         << "first_name VARCHAR(256) NOT NULL,"
                         << "last_name VARCHAR(256) NOT NULL,"
@@ -29,7 +29,7 @@ namespace database
                         << "password VARCHAR(256) NOT NULL,"
                         << "email VARCHAR(256) NULL,"
                         << "title VARCHAR(1024) NULL);",
-                now;
+                now;*/
         }
 
         catch (Poco::Data::PostgreSQL::PostgreSQLException &e)
@@ -190,18 +190,11 @@ namespace database
             Statement select(session);
             std::vector<User> result;
             User a;
-            first_name += "%";
-            last_name += "%";
-            select << "SELECT id, first_name, last_name, email, title, login, password FROM users where first_name LIKE $1 and last_name LIKE $2",
-                into(a._id),
-                into(a._first_name),
-                into(a._last_name),
-                into(a._email),
-                into(a._title),
-                into(a._login),
-                into(a._password),
-                use(first_name),
-                use(last_name),
+            //first_name += "%";
+            //last_name += "%";
+            select << "SELECT id, login, password, first_name, last_name, email FROM public.\"User\" WHERE first_name LIKE $1 and last_name LIKE $2",
+                into(a._id), into(a._login), into(a._password), into(a._first_name), into(a._last_name), into(a._email),
+                use(first_name), use(last_name),
                 range(0, 1); //  iterate over result set one row at a time
 
             while (!select.done())

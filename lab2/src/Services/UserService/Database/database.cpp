@@ -24,7 +24,7 @@ namespace database
         return database_mongo;
     }
 
-    Database &Database::get()
+    Database& Database::get()
     {
         static Database _instance;
         return _instance;

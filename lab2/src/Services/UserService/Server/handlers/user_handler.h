@@ -47,7 +47,7 @@ using Poco::Util::OptionCallback;
 using Poco::Util::OptionSet;
 using Poco::Util::ServerApplication;
 
-static bool hasSubstr(const std::string &str, const std::string &substr)
+static bool hasSubstr(const std::string &str, const std::string &substr)	//TODO to string.find() 
 {
     if (str.size() < substr.size())
         return false;
@@ -65,20 +65,18 @@ static bool hasSubstr(const std::string &str, const std::string &substr)
 class UserHandler : public HTTPRequestHandler
 {
 private:
-    bool check_name(const std::string &name, std::string &reason)
+    bool validateName(const std::string &name, std::string &reason)
     {
         if (name.length() < 3)
         {
-            reason = "Name must be at leas 3 signs";
+            reason = "Name must be at least 3 signs";
             return false;
         }
-
         if (name.find(' ') != std::string::npos)
         {
             reason = "Name can't contain spaces";
             return false;
         }
-
         if (name.find('\t') != std::string::npos)
         {
             reason = "Name can't contain spaces";
@@ -113,8 +111,7 @@ private:
 
 public:
     UserHandler(const std::string &format) : _format(format)
-    {
-    }
+    {}
 
     Poco::JSON::Object::Ptr remove_password(Poco::JSON::Object::Ptr src)
     {
@@ -122,11 +119,10 @@ public:
             src->set("password", "*******");
         return src;
     }
-
-    void handleRequest(HTTPServerRequest &request,
-                       HTTPServerResponse &response)
+    void handleRequest(HTTPServerRequest &request, HTTPServerResponse &response)
     {
         HTMLForm form(request, request.stream());
+
         try
         {
             if (form.has("id") && (request.getMethod() == Poco::Net::HTTPRequest::HTTP_GET))
@@ -229,14 +225,14 @@ public:
                     std::string message;
                     std::string reason;
 
-                    if (!check_name(user.get_first_name(), reason))
+                    if (!validateName(user.get_first_name(), reason))
                     {
                         check_result = false;
                         message += reason;
                         message += "<br>";
                     }
 
-                    if (!check_name(user.get_last_name(), reason))
+                    if (!validateName(user.get_last_name(), reason))
                     {
                         check_result = false;
                         message += reason;
@@ -271,8 +267,9 @@ public:
                 }
             }
         }
-        catch (...)
+        catch (Poco::Exception& e)
         {
+			std::cerr << e.displayText() << std::endl;
         }
 
         response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_NOT_FOUND);

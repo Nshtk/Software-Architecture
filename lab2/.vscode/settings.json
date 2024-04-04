@@ -10,11 +10,18 @@
 		"README.md": true,
 		"c4-language-server.log": true
 	},
-	"hide-files.files": [
-		".gitattributes",
-		"README.md",
-		"c4-language-server.log"
+	"todo-tree.general.tags": [
+		"FIXME",
+		"BUG",
+		"TODO",
+		"HACK",
+		"REVIEW"
 	],
+	"todo-tree.highlights.defaultHighlight": {
+		"background": "#ff07625f",
+		"foreground": "#ffffff",
+		"fontWeight": "bold"
+	},
 	"cmake.sourceDirectory": "/opt/lab2/src",
 	"files.associations": {
 		"algorithm": "cpp",
@@ -66,9 +73,71 @@
 		"xmemory": "cpp",
 		"xstring": "cpp",
 		"xtr1common": "cpp",
-		"xutility": "cpp"
+		"xutility": "cpp",
+		"cstdarg": "cpp",
+		"cwctype": "cpp",
+		"array": "cpp",
+		"*.tcc": "cpp",
+		"chrono": "cpp",
+		"deque": "cpp",
+		"list": "cpp",
+		"map": "cpp",
+		"set": "cpp",
+		"string": "cpp",
+		"unordered_map": "cpp",
+		"vector": "cpp",
+		"functional": "cpp",
+		"memory_resource": "cpp",
+		"numeric": "cpp",
+		"random": "cpp",
+		"ratio": "cpp",
+		"string_view": "cpp",
+		"fstream": "cpp",
+		"iomanip": "cpp",
+		"numbers": "cpp",
+		"sstream": "cpp",
+		"cfenv": "cpp",
+		"cinttypes": "cpp"
 	},
 	"cmake.buildDirectory": "/home/vscode/build",
 	"cmake.configureArgs": ["-DCMAKE_TOOLCHAIN_FILE=OFF"],
 	"C_Cpp.default.compilerPath": "usr/bin/gcc",
+	"editor.tokenColorCustomizations": {
+		"[Darcula]": {
+			"comments": "#9259098f",
+			"numbers": "#0066ff",
+			"strings": "#00ff37",
+			"types": "#ffe600",
+			"functions": "#9c0505",
+			"textMateRules": [
+				{
+					"scope": "variable.other.local", "settings": { "foreground": "#cfcfcf", },
+				},
+				{
+					"scope": "entity.name.namespace", "settings": { "foreground": "#74008e", }
+				},
+				{
+					"scope": "variable.parameter", "settings": { "foreground": "#ffffff", },
+				},
+				{
+					"scope": "variable.other.property", "settings": { "foreground": "#85beff", },
+				},
+				{
+					"scope": "variable.global", "settings": { "foreground": "#ffffff", "fontStyle": "italic bold"},
+				},
+				{
+					"scope": "property.static", "settings": { "foreground": "#ffffff", "fontStyle": "italic bold"},
+				},
+				{
+					"scope": "method.static", "settings": { "foreground": "#eb0000", "fontStyle": "bold"},
+				},
+				{
+					"scope": "macro", "settings": { "foreground": "#0040ff", "fontStyle": "italic bold"},
+				},
+				{
+					"scope": "templateFunction", "settings": { "foreground": "#ffe600", },
+				},
+			]
+		},
+	}
 }
