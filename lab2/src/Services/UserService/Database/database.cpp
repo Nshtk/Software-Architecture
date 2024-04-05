@@ -1,9 +1,10 @@
-#include "../Config/config.h"
-#include "database.h"
 #include <stdexcept>
 
 #include <Poco/JSON/Parser.h>
 #include <Poco/Dynamic/Var.h>
+
+#include "../Config/config.h"
+#include "database.h"
 
 namespace database
 {

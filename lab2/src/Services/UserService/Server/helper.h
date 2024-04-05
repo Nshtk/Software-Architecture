@@ -1,10 +1,12 @@
 #pragma once
+
 #include <string>
+#include <istream>
+#include <ostream>
+
 #include "Poco/Base64Decoder.h"
 #include "Poco/JWT/Token.h"
 #include "Poco/JWT/Signer.h"
-#include <istream>
-#include <ostream>
 
 bool get_identity(const std::string identity, std::string &login, std::string &password)
 {

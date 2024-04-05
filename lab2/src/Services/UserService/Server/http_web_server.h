@@ -20,7 +20,7 @@
 #include "Poco/Util/HelpFormatter.h"
 #include "http_request_factory.h"
 
-#include "../Database/user.h"
+#include "../Database/Models/user.h"
 
 using Poco::DateTimeFormat;
 using Poco::DateTimeFormatter;

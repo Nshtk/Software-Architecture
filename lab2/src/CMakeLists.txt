@@ -19,7 +19,7 @@ include_directories(${Poco_INCLUDE_DIRS})
 add_executable(${LAB2_BINARY} 		../src/Services/UserService/Core/main.cpp
 									../src/Services/UserService/Config/config.cpp
 									../src/Services/UserService/Database/database.cpp
-									../src/Services/UserService/Database/user.cpp)
+									../src/Services/UserService/Database/Models/user.cpp)
 
 
 target_include_directories(${LAB2_BINARY} PRIVATE "${CMAKE_BINARY_DIR}")

@@ -24,7 +24,7 @@
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
 
-#include "../../Database/user.h"
+#include "../../Database/Models/user.h"
 #include "../helper.h"
 
 using Poco::DateTimeFormat;
@@ -46,21 +46,6 @@ using Poco::Util::Option;
 using Poco::Util::OptionCallback;
 using Poco::Util::OptionSet;
 using Poco::Util::ServerApplication;
-
-static bool hasSubstr(const std::string &str, const std::string &substr)	//TODO to string.find() 
-{
-    if (str.size() < substr.size())
-        return false;
-    for (size_t i = 0; i <= str.size() - substr.size(); ++i)
-    {
-        bool ok{true};
-        for (size_t j = 0; ok && (j < substr.size()); ++j)
-            ok = (str[i + j] == substr[j]);
-        if (ok)
-            return true;
-    }
-    return false;
-}
 
 class UserHandler : public HTTPRequestHandler
 {
@@ -129,7 +114,7 @@ public:
             {
                 long id = atol(form.get("id").c_str());
 
-                std::optional<database::User> result = database::User::read_by_id(id);
+                std::optional<database::User> result = database::User::get(id);
                 if (result)
                 {
                     response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
@@ -155,7 +140,7 @@ public:
                     return;
                 }
             }
-            else if (hasSubstr(request.getURI(), "/auth"))
+            else if (request.getURI().find("/auth")!=std::string::npos)
             {
 
                 std::string scheme;
@@ -167,7 +152,7 @@ public:
                 if (scheme == "Basic")
                 {
                     get_identity(info, login, password);
-                    if (auto id = database::User::auth(login, password))
+                    if (auto id = database::User::authenticate(login, password))
                     {
                         std::string token = generate_token(*id,login);
                         response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
@@ -192,12 +177,12 @@ public:
                 Poco::JSON::Stringifier::stringify(root, ostr);
                 return;
             }
-            else if (hasSubstr(request.getURI(), "/search"))
+            else if (request.getURI().find("/search")!=std::string::npos)
             {
 
                 std::string fn = form.get("first_name");
                 std::string ln = form.get("last_name");
-                auto results = database::User::search(fn, ln);
+                auto results = database::User::searchByName(fn, ln);
                 Poco::JSON::Array arr;
                 for (auto s : results)
                     arr.add(remove_password(s.toJSON()));
@@ -217,7 +202,6 @@ public:
                     user.first_name() = form.get("first_name");
                     user.last_name() = form.get("last_name");
                     user.email() = form.get("email");
-                    user.title() = form.get("title");
                     user.login() = form.get("login");
                     user.password() = form.get("password");
 
@@ -248,7 +232,7 @@ public:
 
                     if (check_result)
                     {
-                        user.save_to_mysql();
+                        user.insert();
                         response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
                         response.setChunkedTransferEncoding(true);
                         response.setContentType("application/json");

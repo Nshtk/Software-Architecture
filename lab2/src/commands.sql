@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS public."Order"
         ON DELETE NO ACTION
         NOT VALID
 );
-
+--Only users iserted from code have hashed passwords
 INSERT INTO public."User" (login, password, first_name, last_name, email) VALUES
 ('sample_login_1', '12345678', 'Sample First Name 1', 'Sample Last Name 1', 'sample_1@mail.ru'),
 ('sample_login_2', '123456789', 'Sample First Name 2', 'Sample Last Name 2', 'sample_2@mail.ru'),
