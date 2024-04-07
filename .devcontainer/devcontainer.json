@@ -1,11 +1,11 @@
 {
 	"name": "Existing Docker Compose (Extend)",
 	"dockerComposeFile": [
-		"../lab2/docker-compose.yml",
+		"../CourseWork/docker-compose.yml",
 	],
 
 	"service": "user_service",
-	"workspaceFolder": "/opt/lab2",
+	"workspaceFolder": "/opt/CourseWork",
 
 	"customizations": {
 		"vscode": {
