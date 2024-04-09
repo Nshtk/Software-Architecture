@@ -27,7 +27,7 @@ namespace database
 			User(const std::string& login, const std::string& password, const std::string& first_name, const std::string& last_name, const std::string& email)
 				: login(login), password(password), first_name(first_name), last_name(last_name), email(email)
 			{}
-			User(const std::string&  string_json)	//From JSON
+			User(const std::string& string_json)	//From JSON
 			{
         		Poco::JSON::Parser parser;
         		Poco::Dynamic::Var result = parser.parse(string_json);
@@ -48,7 +48,8 @@ namespace database
             static std::vector<User> getAll();
 			static std::optional<User> searchByLogin(std::string login);
             static std::vector<User> searchByName(std::string first_name,std::string last_name);
-            void insert();
+            
+			void insert();
             Poco::JSON::Object::Ptr toJSON() const;
     };
 }

@@ -39,7 +39,7 @@ class Config
 
         const std::string& get_mongo() const;
         const std::string& get_mongo_port() const;
-        const std::string& get_mongo_database() const;
+        const std::string& getMongoDatabase() const;
 };
 
 #endif

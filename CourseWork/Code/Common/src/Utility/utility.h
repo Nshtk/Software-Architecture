@@ -8,7 +8,7 @@
 #include "Poco/JWT/Token.h"
 #include "Poco/JWT/Signer.h"
 
-bool get_identity(const std::string identity, std::string &login, std::string &password)
+bool getIdentity(const std::string identity, std::string &login, std::string &password)
 {
     std::istringstream istr(identity);
     std::ostringstream ostr;
@@ -25,13 +25,12 @@ bool get_identity(const std::string identity, std::string &login, std::string &p
 }
 
 std::string getJWTKey() {
-    if (std::getenv("JWT_KEY") != nullptr) {
+    if (std::getenv("JWT_KEY") != nullptr)
         return std::getenv("JWT_KEY");
-    }
-    return "0123456789ABCDEF0123456789ABCDEF";
+    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTI2OTEyMDguNDM4MjI5LCJpZCI6MSwibG9naW4iOiJzYW1wbGVfbG9naW5fMSIsInN1YiI6ImxvZ2luIn0";
 }
 
-std::string generate_token(long &id, std::string &login) {
+std::string generateToken(long &id, std::string &login) {
     Poco::JWT::Token token;
     token.setType("JWT");
     token.setSubject("login");
@@ -43,22 +42,24 @@ std::string generate_token(long &id, std::string &login) {
     return signer.sign(token, Poco::JWT::Signer::ALGO_HS256);
 }
 
-bool extract_payload(std::string &jwt_token, long &id, std::string &login) {
-    if (jwt_token.length() == 0) {
+bool extractPayload(std::string &jwt_token, long &id, std::string &login) {
+    if (jwt_token.length() == 0) 
         return false;
-    }
 
     Poco::JWT::Signer signer(getJWTKey());
-    try {
+    try 
+	{
         Poco::JWT::Token token = signer.verify(jwt_token);
-        if (token.payload().has("login") && token.payload().has("id")) {
+        if (token.payload().has("login") && token.payload().has("id")) 
+		{
             login = token.payload().getValue<std::string>("login");
-            id = token.payload().getValue<long>("id");
-            return true;
+            id = token.payload().getValue<long>("id");	
+            return true;		//TODO verify via db
         }
         std::cout << "Not enough fields in token" << std::endl;
-
-    } catch (...) {
+    } 
+	catch (...) 
+	{
         std::cout << "Token verification failed" << std::endl;
     }
     return false;

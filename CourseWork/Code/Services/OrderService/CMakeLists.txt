@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 
-project(user_service)
-SET (USER_BINARY "user_service")
+project(ORDER_service)
+SET (ORDER_BINARY "order_service")
 
 SET(CMAKE_CXX_STANDARD 17)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -16,18 +16,18 @@ endif()
 
 include_directories(${Poco_INCLUDE_DIRS})
 
-add_executable(${USER_BINARY} ./src/main.cpp
+add_executable(${ORDER_BINARY} ./src/main.cpp
 							../../Database/src/Config/config.cpp
 							../../Database/src/database.cpp
-							../../Database/src/Models/User/user.cpp)
+							../../Database/src/Models/Order/order.cpp)
 
 
-target_include_directories(${USER_BINARY} PRIVATE "${CMAKE_BINARY_DIR}")
-target_compile_options(${USER_BINARY} PRIVATE -Wall -Wextra -pedantic)
-set_target_properties(${USER_BINARY} PROPERTIES LINKER_LANGUAGE CXX)
-set_target_properties(${USER_BINARY} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+target_include_directories(${ORDER_BINARY} PRIVATE "${CMAKE_BINARY_DIR}")
+target_compile_options(${ORDER_BINARY} PRIVATE -Wall -Wextra -pedantic)
+set_target_properties(${ORDER_BINARY} PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(${ORDER_BINARY} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 
-target_link_libraries(${USER_BINARY} PRIVATE 
+target_link_libraries(${ORDER_BINARY} PRIVATE 
                              ${CMAKE_THREAD_LIBS_INIT} 
                              ${Poco_LIBRARIES}
                              "PocoDataPostgreSQL")

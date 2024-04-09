@@ -19,7 +19,8 @@
 #include <Poco/MongoDB/Database.h>
 #include <Poco/MongoDB/Cursor.h>
 
-namespace database{
+namespace database
+{
     class Database{
         private:
             std::string _connection_string;
@@ -31,12 +32,37 @@ namespace database{
             Database();
         public:
             static Database& get();
-            Poco::Data::Session create_session();
-            Poco::MongoDB::Database& get_mongo_database();
-            void send_to_mongo(const std::string& collection,Poco::JSON::Object::Ptr json);
-            void update_mongo(const std::string& collection,std::map<std::string,long>& params,Poco::JSON::Object::Ptr json);
-            std::vector<std::string> get_from_mongo(const std::string& collection,std::map<std::string,long>& params);
-            long count_from_mongo(const std::string& collection,std::map<std::string,long>& params);
-    };
+            Poco::Data::Session createSession();
+            Poco::MongoDB::Database& getMongoDatabase();
+            void sendToMongo(const std::string& collection, Poco::JSON::Object::Ptr json);
+            void updateInMongo(const std::string& collection,std::map<std::string,long>& params, Poco::JSON::Object::Ptr json);
+            //template<typename T> std::vector<std::string> getFromMongo(const std::string& collection, std::map<std::string,T>& params);
+            long countFromMongo(const std::string& collection, std::map<std::string,long>& params);
+			bool deleteFromMongo(const std::string &collection, std::map<std::string, long> &params);
+			template<typename T> std::vector<std::string> getFromMongo(const std::string& collection, std::map<std::string,T>& params)
+    		{
+    		   std::vector<std::string> result;
+    		    try
+    		    {
+    		        Poco::MongoDB::QueryRequest request("sa-accommodation-service-mongo."+collection);
+    		        Poco::MongoDB::ResponseMessage response;
+
+    		        for (auto &[key, val] : params)
+    		            request.selector().add(key, val);
+    		        connection_mongo.sendRequest(request, response);
+
+    		        for (auto doc : response.documents())
+    		            result.push_back(doc->toString());
+    		    }
+    		    catch (std::exception &ex)
+    		    {
+    		        std::cout << "mongodb exception: " << ex.what() << std::endl;
+    		        std::string lastError = database_mongo.getLastError(connection_mongo);
+    		        if (!lastError.empty())
+    		            std::cout << "mongodb Last Error: " << lastError << std::endl;
+    		    }
+    		    return result;
+    		}
+	};
 }
 #endif

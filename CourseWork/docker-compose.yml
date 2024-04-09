@@ -41,7 +41,7 @@ services:
       - DB_DATABASE=sa-accommodation-service
       - MONGO_HOST=mongo_db
       - MONGO_PORT=27017
-      - MONGO_DATABASE=sa-accommodation-service-mongo   # change names
+      - MONGO_DATABASE=sa-accommodation-service-mongo 
     depends_on:
       postgres_db:
         condition: service_healthy
@@ -50,11 +50,34 @@ services:
     networks:
       - accommodation_network
 
+  order_service:
+    tty: true
+    container_name: order_service
+    build:
+      context: ./Code/Services/OrderService
+      dockerfile: ./Dockerfile
+    environment:
+      - DB_HOST=postgres_db   # container name
+      - DB_PORT=5432
+      - DB_LOGIN=service_admin
+      - DB_PASSWORD=123456789
+      - DB_DATABASE=sa-accommodation-service
+      - MONGO_HOST=mongo_db
+      - MONGO_PORT=27017
+      - MONGO_DATABASE=sa-accommodation-service-mongo 
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+    ports:
+      - 8082:8081
+    networks:
+      - accommodation_network
+
   postgres_db:
     container_name: postgres_db
     build:
       context: ./Code/Database
-      dockerfile: ./Dockerfile
+      dockerfile: ./postgres.Dockerfile
     environment:
       - POSTGRES_USER=service_admin
       - POSTGRES_PASSWORD=123456789
@@ -74,13 +97,15 @@ services:
       - accommodation_network
 
   mongo_db:
-    image: mongo:5.0
+    container_name: mongo_db
+    build:
+      context: ./Code/Database
+      dockerfile: ./mongo.Dockerfile
     restart: on-failure
     networks:
       - accommodation_network
     volumes:
       - mongodb_data:/data/db
-      - ./Code/Database/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
     ports:
       - '27017:27017'
     healthcheck:

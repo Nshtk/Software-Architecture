@@ -27,5 +27,5 @@ COPY CMakeLists.txt ./
 RUN mkdir ./build
 #RUN cmake -B ./build -S ./
 #RUN make -C ./build
-#ENTRYPOINT [ "./build/course_work" ]
+#ENTRYPOINT [ "./build/user_service" ]
 ENTRYPOINT ["tail", "-f", "/dev/null" ]

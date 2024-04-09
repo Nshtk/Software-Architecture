@@ -37,7 +37,7 @@ namespace database
     {
         try
         {
-            Poco::Data::Session session = database::Database::get().create_session();
+            Poco::Data::Session session = database::Database::get().createSession();
             Poco::Data::Statement select(session);
             long id;
 
@@ -66,7 +66,7 @@ namespace database
     {
         try
         {
-            Poco::Data::Session session = database::Database::get().create_session();
+            Poco::Data::Session session = database::Database::get().createSession();
             Poco::Data::Statement select(session);
             User user;
 
@@ -95,7 +95,7 @@ namespace database
     {
         try
         {
-            Poco::Data::Session session = database::Database::get().create_session();
+            Poco::Data::Session session = database::Database::get().createSession();
             Statement select(session);
             std::vector<User> result;
             User user;
@@ -128,7 +128,7 @@ namespace database
     {
         try
         {
-            Poco::Data::Session session = database::Database::get().create_session();
+            Poco::Data::Session session = database::Database::get().createSession();
             Statement select(session);
             std::vector<User> result;
             User user;
@@ -158,7 +158,7 @@ namespace database
     {
         try
         {
-            Poco::Data::Session session = database::Database::get().create_session();
+            Poco::Data::Session session = database::Database::get().createSession();
             Statement select(session);
             std::vector<User> result;
             User user;
@@ -191,7 +191,7 @@ namespace database
     {
         try
         {
-            Poco::Data::Session session = database::Database::get().create_session();
+            Poco::Data::Session session = database::Database::get().createSession();
             Poco::Data::Statement insert(session), select(session);
 			Poco::PBKDF2Engine<Poco::HMACEngine<Poco::SHA1Engine>> pbkdf2(std::to_string(Poco::Random().next()), 4096, 256);
 			std::string password_hashed;
@@ -227,7 +227,7 @@ namespace database
 	{
 		try
         {
-            Poco::Data::Session session = database::Database::get().create_session();
+            Poco::Data::Session session = database::Database::get().createSession();
             Poco::Data::Statement update(session), select(session);
 
             update << "UPDATE public.\"User\" SET first_name=$2, last_name=$3, email=$4 WHERE id=$1", 
@@ -258,7 +258,7 @@ namespace database
 	{
 		try
         {
-            Poco::Data::Session session = database::Database::get().create_session();
+            Poco::Data::Session session = database::Database::get().createSession();
             Poco::Data::Statement remove(session);
             User user;
 

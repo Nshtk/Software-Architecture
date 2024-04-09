@@ -25,7 +25,7 @@
 #include "Poco/Util/HelpFormatter.h"
 
 #include "../../../../../../Database/src/Models/User/user.h"
-#include "../../Utility/utility.h"
+#include "../../../../../../Common/src/Utility/utility.h"
 
 using Poco::DateTimeFormat;
 using Poco::DateTimeFormatter;
@@ -161,15 +161,15 @@ public:
                 std::string login, password;
                 if (scheme == "Basic")
                 {
-                    get_identity(info, login, password);
+                    getIdentity(info, login, password);
                     if (auto id = database::User::authenticate(login, password))
                     {
-                        std::string token = generate_token(*id,login);
+                        std::string token = generateToken(*id,login);
                         response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
                         response.setChunkedTransferEncoding(true);
                         response.setContentType("application/json");
                         std::ostream &ostr = response.send();
-                        ostr << "{ \"id\" : \"" << *id << "\", \"Token\" : \""<< token <<"\"}" << std::endl;
+                        ostr << "{ \"id\" : \"" << *id << "\", \"login\" : \"" << login << "\", \"Token\" : \""<< token <<"\"}" << std::endl;
                         return;
                     }
                 }

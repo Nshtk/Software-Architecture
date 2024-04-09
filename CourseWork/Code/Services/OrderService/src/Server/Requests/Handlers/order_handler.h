@@ -163,7 +163,7 @@ public:
                 	    return;
                 	}
 				}
-				else if(request.getURI().find("/create")!=std::string::npos && request.getMethod()==Poco::Net::HTTPRequest::HTTP_POST)
+				else if(request.getMethod()==Poco::Net::HTTPRequest::HTTP_POST)
 				{
 					if (form.has("id"), form.has("name") && form.has("description") && form.has("price") && form.has("deadline"))
                 	{

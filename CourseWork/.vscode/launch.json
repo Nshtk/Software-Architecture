@@ -2,10 +2,58 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Linux",
+			"name": "UserService",
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/Code/Services/UserService/build/user_service",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${fileDirname}",
+			"environment": [],
+			"externalConsole": false,
+			"MIMode": "gdb",
+			"setupCommands": [
+				{
+					"description": "Enable pretty-printing for gdb",
+					"text": "-enable-pretty-printing",
+					"ignoreFailures": true
+				},
+				{
+					"description": "Set Disassembly Flavor to Intel",
+					"text": "-gdb-set disassembly-flavor intel",
+					"ignoreFailures": true
+				}
+			]
+		},
+		{
+			"name": "AccommodationService",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/Code/Services/AccommodationService/build/accommodation_service",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${fileDirname}",
+			"environment": [],
+			"externalConsole": false,
+			"MIMode": "gdb",
+			"setupCommands": [
+				{
+					"description": "Enable pretty-printing for gdb",
+					"text": "-enable-pretty-printing",
+					"ignoreFailures": true
+				},
+				{
+					"description": "Set Disassembly Flavor to Intel",
+					"text": "-gdb-set disassembly-flavor intel",
+					"ignoreFailures": true
+				}
+			]
+		},
+		{
+			"name": "OrderService",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/Code/Services/OrderService/build/order_service",
 			"args": [],
 			"stopAtEntry": false,
 			"cwd": "${fileDirname}",

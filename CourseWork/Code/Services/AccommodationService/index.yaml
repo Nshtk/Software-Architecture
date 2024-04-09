@@ -7,6 +7,134 @@ servers:
   - url: http://localhost:8080
     description: Web server
 paths:
-  /accommodation/search:
+  /order:
     get:
+      summary: Get orders for user
+      responses:
+        '200':
+          description: Order for user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/accommodation'
+        404:
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update order
+      parameters:
+      - name: id
+        description: Order id
+        in: query
+        required: true
+        schema:
+          type: integer
+          default: 1
+      - name: accommodations
+        description: Accommodations
+        in: query
+        required: true
+        schema:
+          type: array
+      responses:
+        '200':
+          description: Order id updated
+          content:
+            application/json:
+              schema:
+                type: integer
+        404:
+          description: Order not updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create order
+      parameters:
+      - name: id
+        description: Order id
+        in: query
+        required: true
+        schema:
+          type: integer
+          default: 1
+      - name: user_id
+        description: User id
+        in: query
+        required: true
+        schema:
+          type: integer
+          default: 1
+      - name: accommodations
+        description: Accommodations
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Id
+          content:
+            application/json:
+              schema:
+                type: integer
+        404:
+          description: Error adding order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    id:
+      description: Id
+      type: integer
+    accommodations:
+      type: array
+      items:
+        $ref: '#/components/schemas/accommodation'
+    accommodation:
+      type: object
+      properties:
+        accommodation_id:
+          type: integer
+        accommodation_name:
+          type: string
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          description: Error message
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []
       

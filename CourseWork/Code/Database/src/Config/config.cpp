@@ -28,7 +28,7 @@ const std::string& Config::get_mongo() const{
 const std::string& Config::get_mongo_port() const{
     return _mongo_port;
 }
-const std::string& Config::get_mongo_database() const{
+const std::string& Config::getMongoDatabase() const{
     return _mongo_database;
 }
 

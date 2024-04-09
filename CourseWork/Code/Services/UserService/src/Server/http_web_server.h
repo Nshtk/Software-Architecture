@@ -49,7 +49,7 @@ public:
     {
     	try
         {
-            Poco::Data::Session session = database::Database::get().create_session();
+            Poco::Data::Session session = database::Database::get().createSession();
         }
         catch (Poco::Data::PostgreSQL::PostgreSQLException &e)
         {

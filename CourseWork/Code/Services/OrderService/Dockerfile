@@ -21,11 +21,11 @@ RUN git clone -b poco-1.12.4-release https://github.com/pocoproject/poco.git &&\
     cd && rm poco/* -rf 
 RUN ldconfig
 
-WORKDIR /opt/CourseWork/Code/OrderService
+WORKDIR /opt/CourseWork/Code/AccommodationService
 COPY ./src ./
 COPY CMakeLists.txt ./
 RUN mkdir ./build
 #RUN cmake -B ./build -S ./
 #RUN make -C ./build
-#ENTRYPOINT [ "./build/order_service" ]
+#ENTRYPOINT [ "./build/accommodation_service" ]
 ENTRYPOINT ["tail", "-f", "/dev/null" ]
