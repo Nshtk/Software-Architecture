@@ -24,7 +24,7 @@
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
 
-#include "../../../../../../Database/src/Models/Accommodation/accommodation.h"
+#include "../../../../../../Database/src/Models/Order/Order.h"
 #include "../../../../../../Common/src/Utility/utility.h"
 
 using Poco::DateTimeFormat;
@@ -47,12 +47,12 @@ using Poco::Util::OptionCallback;
 using Poco::Util::OptionSet;
 using Poco::Util::ServerApplication;
 
-class AccommodationHandler : public HTTPRequestHandler
+class OrderHandler : public HTTPRequestHandler
 {
 private:
 
 public:
-    AccommodationHandler(const std::string &format) : _format(format)
+    OrderHandler(const std::string &format) : _format(format)
     {}
 
     void handleRequest(HTTPServerRequest &request, HTTPServerResponse &response)
@@ -78,8 +78,8 @@ public:
                     root->set("type", "/errors/not_authorized");
                     root->set("title", "Internal exception");
                     root->set("status", "403");
-                    root->set("detail", "Accommodation not authorized");
-                    root->set("instance", "/accommodation");
+                    root->set("detail", "Order not authorized");
+                    root->set("instance", "/Order");
                     std::ostream &ostr = response.send();
                     Poco::JSON::Stringifier::stringify(root, ostr);
                     return;                   
@@ -87,100 +87,27 @@ public:
             }
             std::cout << "id:" << id << " login:" << login << std::endl;
 
-			if (request.getURI().find("/accommodation")!=std::string::npos)
+			if (request.getURI().find("/order")!=std::string::npos)
             {
-				if(request.getURI().find("/search")!=std::string::npos)
+				if(request.getURI().find("/create")!=std::string::npos)
 				{
-					std::string name = form.get("name");
-					Poco::JSON::Array arr;
-
-					if(!login.empty())
-					{
-						auto results = database::Accommodation::searchByName(name);
-						if(results.empty())
-						{
-							response.setStatus(Poco::Net::HTTPResponse::HTTP_NOT_FOUND);
-                    	    std::ostream &ostr = response.send();
-                    	    ostr << "Accommodations not found";
-                    	    response.send();
-                    	    return;
-						}
-                		for (auto s : results)
-                    		arr.add(s.toJSON());
-					}
-					else
-					{
-						auto results = database::Accommodation::searchByName(name);
-						if(results.empty())
-						{
-							response.setStatus(Poco::Net::HTTPResponse::HTTP_NOT_FOUND);
-                        	std::ostream &ostr = response.send();
-                        	ostr << "Accommodations not found";
-                        	response.send();
-                        	return;
-						}
-                		for (auto s : results)
-                    		arr.add(s.toJSON());
-					}
-				
-                	response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
-                	response.setChunkedTransferEncoding(true);
-                	response.setContentType("application/json");
-                	std::ostream &ostr = response.send();
-                	Poco::JSON::Stringifier::stringify(arr, ostr);
-
-                	return;
-				}
-				else if(request.getMethod()==Poco::Net::HTTPRequest::HTTP_DELETE)
-				{
-					bool result;
-					if(form.has("id"))
-                		result = database::Accommodation::remove(atol(form.get("id").c_str()));
-
-                	if (result)
+					if (form.has("id"), form.has("user_id") && form.has("accommodation_id") && form.has("accommodation_name"))
                 	{
-                	    response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
-                	    response.setChunkedTransferEncoding(true);
-                	    response.setContentType("application/json");
-                	    std::ostream &ostr = response.send();
-						if(result)
-							Poco::JSON::Stringifier::stringify(id, ostr);
-                	    return;
-                	}
-                	else
-                	{
-                	    response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_NOT_FOUND);
-                	    response.setChunkedTransferEncoding(true);
-                	    response.setContentType("application/json");
-                	    Poco::JSON::Object::Ptr root = new Poco::JSON::Object();
-                	    root->set("type", "/errors/not_found");
-                	    root->set("title", "Internal exception");
-                	    root->set("status", "404");
-                	    root->set("detail", "Accommodation not deleted");
-                	    root->set("instance", "/Accommodation");
-                	    std::ostream &ostr = response.send();
-                	    Poco::JSON::Stringifier::stringify(root, ostr);
-                	    return;
-                	}
-				}
-				else if(request.getMethod()==Poco::Net::HTTPRequest::HTTP_POST)
-				{
-					if (form.has("id"), form.has("name") && form.has("description") && form.has("price") && form.has("deadline"))
-                	{
-						int tz=1;
-                	    database::Accommodation Accommodation(atol(form.get("id").c_str()), form.get("name"), form.get("description"), atoi(form.get("price").c_str()), Poco::DateTimeParser::parse(Poco::DateTimeFormat::ISO8601_FORMAT, form.get("deadline"), tz));
+						std::vector<database::Order::Accommodation> accommodations;
+						accommodations.push_back(database::Order::Accommodation(atol(form.get("accommodation_id").c_str()), form.get("accommodation_name")));
+                	    database::Order order(atol(form.get("id").c_str()), atol(form.get("user_id").c_str()), accommodations);
                 	    bool check_result = true;
                 	    std::string message;
                 	    std::string reason;
 
                 	    if (check_result)
                 	    {
-                	        Accommodation.insert();
+                	        order.insert();
                 	        response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
                 	        response.setChunkedTransferEncoding(true);
                 	        response.setContentType("application/json");
                 	        std::ostream &ostr = response.send();
-                	        ostr << Accommodation.id;
+                	        ostr << order.id;
                 	        return;
                 	    }
                 	    else
@@ -193,28 +120,49 @@ public:
                 	    }
                 	}
 				}
+				else if (request.getMethod() == Poco::Net::HTTPRequest::HTTP_PUT)
+				{
+					std::vector<database::Order::Accommodation> accommodations;
+
+					for(int i=0; true; i++)
+					{
+						try
+						{
+							std::string string_array="accommodations["+std::to_string(i)+']';
+							auto item_1 =form.get(string_array+"accommodation_id");
+							auto item_2 =form.get(string_array+"accommodation_name");
+							accommodations.push_back(database::Order::Accommodation(atol(item_1.c_str()), item_2));
+						}
+						catch(...)
+						{
+							break;
+						}
+					}
+					database::Order order(atol(form.get("id").c_str()), atol(form.get("user_id").c_str()), accommodations);
+
+                	order.modify();
+
+                	response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
+                	response.setChunkedTransferEncoding(true);
+                	response.setContentType("application/json");
+                	std::ostream &ostr = response.send();
+                	ostr << order.id;
+                	return;
+				}
 				else
 				{
-					std::optional<database::Accommodation> result;
-					std::vector<database::Accommodation> result_all;
+					std::optional<database::Order> result;
 
-					if(form.has("id"))
-                		result = database::Accommodation::get(atol(form.get("id").c_str()));
-					else
-						result_all=database::Accommodation::getAll();
+					if(form.has("user_id"))
+                		result = database::Order::getFromUserId(atol(form.get("user_id").c_str()));
 
-					int result_all_size=result_all.size();
-                	if (result || result_all_size)
+                	if (result)
                 	{
                 	    response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
                 	    response.setChunkedTransferEncoding(true);
                 	    response.setContentType("application/json");
                 	    std::ostream &ostr = response.send();
-						if(result)
-							Poco::JSON::Stringifier::stringify(result->toJSON(), ostr);
-						else
-							for(int i=0; i<result_all_size; i++)
-								Poco::JSON::Stringifier::stringify(result_all[i].toJSON(), ostr);
+						Poco::JSON::Stringifier::stringify(result->toJSON(), ostr);
                 	    return;
                 	}
                 	else
@@ -226,17 +174,13 @@ public:
                 	    root->set("type", "/errors/not_found");
                 	    root->set("title", "Internal exception");
                 	    root->set("status", "404");
-                	    root->set("detail", "Accommodation not found");
-                	    root->set("instance", "/Accommodation");
+                	    root->set("detail", "Order not found");
+                	    root->set("instance", "/order");
                 	    std::ostream &ostr = response.send();
                 	    Poco::JSON::Stringifier::stringify(root, ostr);
                 	    return;
                 	}
 				}
-			}
-			else
-			{
-
 			}
         }
         catch (Poco::Exception& e)
@@ -252,7 +196,7 @@ public:
         root->set("title", "Internal exception");
         root->set("status", Poco::Net::HTTPResponse::HTTPStatus::HTTP_NOT_FOUND);
         root->set("detail", "request not found");
-        root->set("instance", "/Accommodation");
+        root->set("instance", "/Order");
         std::ostream &ostr = response.send();
         Poco::JSON::Stringifier::stringify(root, ostr);
     }

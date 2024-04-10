@@ -47,12 +47,14 @@ namespace database
 			auto object_array = object->getArray("accommodations");
 			for (Poco::JSON::Array::ConstIterator it = object_array->begin(); it != object_array->end(); ++it)
 			{
-				accommodations.push_back(Accommodation(it->convert<long>(), it->convert<std::string>()));
+				Poco::Dynamic::Var result = parser.parse(it->convert<std::string>());
+       			Poco::JSON::Object::Ptr object_nested = result.extract<Poco::JSON::Object::Ptr>();
+				accommodations.push_back(Accommodation(object_nested->getValue<long>("accommodation_id"), object_nested->getValue<std::string>("accommodation_name")));
 			}
 		}
 
 		static std::optional<Order> get(long id);
-		static std::vector<Order> getAll();
+		static std::optional<Order> getFromUserId(long id);
 		static std::vector<Order> searchByName(std::string name);
 		static bool remove(long id);
 

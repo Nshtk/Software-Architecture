@@ -25,7 +25,7 @@ namespace database
 
 		for(int i=0; i<accommodations.size(); i++)
 		{
-			Poco::JSON::Object::Ptr obj;
+			Poco::JSON::Object::Ptr obj=new Poco::JSON::Object();
 			obj->set("accommodation_id", accommodations[i].accommodation_id);
 			obj->set("accommodation_name", accommodations[i].accommodation_name);
 			object_array.add(obj);
@@ -38,14 +38,28 @@ namespace database
     {
         std::optional<Order> result;
         std::map<std::string,long> params; params["_id"] = id;
-        auto results = database::Database::get().getFromMongo<long>("Orders", params);
+        auto results = database::Database::get().getFromMongo<long>("orders", params);
 
         if(!results.empty())
             result = Order(results[0]);
         
         return result;
     }
+	std::optional<Order> Order::getFromUserId(long id)
+    {
+        std::optional<Order> result;
+        std::map<std::string,long> params; params["user_id"] = id;
+        auto results = database::Database::get().getFromMongo<long>("orders", params);
 
+        if(!results.empty())
+            result = Order(results[0]);
+        
+        return result;
+    }
+    void Order::insert()
+    {
+        database::Database::get().sendToMongo("orders", toJSON());
+    }
 	void Order::modify()
     {
         std::map<std::string,long> params;
@@ -56,6 +70,6 @@ namespace database
     {
         std::map<std::string,long> params;
         params["_id"] = id;       
-        return database::Database::get().deleteFromMongo("Orders", params);
+        return database::Database::get().deleteFromMongo("orders", params);
     }
 }

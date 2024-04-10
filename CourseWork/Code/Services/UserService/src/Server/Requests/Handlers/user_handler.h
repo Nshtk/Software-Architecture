@@ -152,7 +152,6 @@ public:
             }
             else if (request.getURI().find("/auth")!=std::string::npos)
             {
-
                 std::string scheme;
                 std::string info;
                 request.getCredentials(scheme, info);

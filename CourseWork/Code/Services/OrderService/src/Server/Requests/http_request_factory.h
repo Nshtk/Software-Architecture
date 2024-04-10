@@ -21,7 +21,7 @@
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
 
-#include "Handlers/accommodation_handler.h"
+#include "Handlers/order_handler.h"
 
 using Poco::Net::ServerSocket;
 using Poco::Net::HTTPRequestHandler;
@@ -52,8 +52,8 @@ public:
     HTTPRequestHandler* createRequestHandler(const HTTPServerRequest& request)
     {
         std::cout << "request:" << request.getURI()<< std::endl;
-        if (request.getURI().find("/accommodation")!=std::string::npos) 
-            return new AccommodationHandler(_format);
+        if (request.getURI().find("/order")!=std::string::npos) 
+            return new OrderHandler(_format);
         return 0;
     }
 };
