@@ -24,7 +24,7 @@
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
 
-#include "../../../../../../Database/src/Models/Order/Order.h"
+#include "../../../../../../Database/src/Models/Order/order.h"
 #include "../../../../../../Common/src/Utility/utility.h"
 
 using Poco::DateTimeFormat;

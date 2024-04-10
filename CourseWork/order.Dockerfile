@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/devcontainers/cpp:1-ubuntu-22.04
 
-COPY ./reinstall-cmake.sh /tmp/
+COPY ./Code/reinstall-cmake.sh /tmp/
 ARG REINSTALL_CMAKE_VERSION_FROM_SOURCE="3.22.2"
 RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
         chmod +x /tmp/reinstall-cmake.sh && /tmp/reinstall-cmake.sh ${REINSTALL_CMAKE_VERSION_FROM_SOURCE}; \
@@ -21,11 +21,13 @@ RUN git clone -b poco-1.12.4-release https://github.com/pocoproject/poco.git &&\
     cd && rm poco/* -rf 
 RUN ldconfig
 
-WORKDIR /opt/CourseWork/Code/AccommodationService
-COPY ./src ./
-COPY CMakeLists.txt ./
-RUN mkdir ./build
-#RUN cmake -B ./build -S ./
-#RUN make -C ./build
-#ENTRYPOINT [ "./build/accommodation_service" ]
-ENTRYPOINT ["tail", "-f", "/dev/null" ]
+WORKDIR /opt/Code
+COPY ./Code/Common ./Common
+COPY ./Code/Database ./Database
+COPY ./Code/Services/OrderService/src ./Services/OrderService/src
+COPY ./Code/Services/OrderService/CMakeLists.txt ./Services/OrderService
+RUN mkdir ./Services/OrderService/build
+RUN cmake -B ./Services/OrderService/build -S ./Services/OrderService
+RUN make -C ./Services/OrderService/build
+ENTRYPOINT [ "./Services/OrderService/build/order_service" ]
+#ENTRYPOINT ["tail", "-f", "/dev/null" ]

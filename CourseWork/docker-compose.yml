@@ -8,8 +8,8 @@ services:
       - ./Code:/opt/CourseWork/Code
       - ./.vscode:/opt/CourseWork/.vscode
     build:
-      context: ./Code/Services/UserService
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./user.Dockerfile
     environment:
       - DB_HOST=postgres_db
       - DB_PORT=5432
@@ -31,8 +31,8 @@ services:
     tty: true
     container_name: accommodation_service
     build:
-      context: ./Code/Services/AccommodationService
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./accommodation.Dockerfile
     environment:
       - DB_HOST=postgres_db   # container name
       - DB_PORT=5432
@@ -54,8 +54,8 @@ services:
     tty: true
     container_name: order_service
     build:
-      context: ./Code/Services/OrderService
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./order.Dockerfile
     environment:
       - DB_HOST=postgres_db   # container name
       - DB_PORT=5432
@@ -76,7 +76,7 @@ services:
   postgres_db:
     container_name: postgres_db
     build:
-      context: ./Code/Database
+      context: .
       dockerfile: ./postgres.Dockerfile
     environment:
       - POSTGRES_USER=service_admin
@@ -99,7 +99,7 @@ services:
   mongo_db:
     container_name: mongo_db
     build:
-      context: ./Code/Database
+      context: .
       dockerfile: ./mongo.Dockerfile
     restart: on-failure
     networks:

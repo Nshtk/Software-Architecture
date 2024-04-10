@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.2)
 
-project(ORDER_service)
+project(order_service)
 SET (ORDER_BINARY "order_service")
 
 SET(CMAKE_CXX_STANDARD 17)
