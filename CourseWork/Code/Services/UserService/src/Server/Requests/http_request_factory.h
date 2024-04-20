@@ -49,13 +49,7 @@ public:
     HTTPRequestFactory(const std::string& format):  _format(format)
     {}
 
-    HTTPRequestHandler* createRequestHandler(const HTTPServerRequest& request)
-    {
-        std::cout << "request:" << request.getURI()<< std::endl;
-        if (request.getURI().find("/user") || request.getURI().find("/search") || request.getURI().find("/auth")) 
-            return new UserHandler(_format);
-        return 0;
-    }
+    HTTPRequestHandler* createRequestHandler(const HTTPServerRequest& request);
 };
 
 #endif

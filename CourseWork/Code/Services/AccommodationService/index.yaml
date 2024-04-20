@@ -4,112 +4,89 @@ info:
   title: 'Course Work Services API'
   description: Software Architecture Accommodation service API
 servers:
-  - url: http://localhost:8080
+  - url: http://localhost:8081
     description: Web server
 paths:
-  /order:
-    get:
-      summary: Get orders for user
-      responses:
-        '200':
-          description: Order for user
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/accommodation'
-        404:
-          description: Order not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        500:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    put:
-      summary: Update order
-      parameters:
-      - name: id
-        description: Order id
-        in: query
-        required: true
-        schema:
-          type: integer
-          default: 1
-      - name: accommodations
-        description: Accommodations
-        in: query
-        required: true
-        schema:
-          type: array
-      responses:
-        '200':
-          description: Order id updated
-          content:
-            application/json:
-              schema:
-                type: integer
-        404:
-          description: Order not updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        500:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+  /accommodation/create:
     post:
-      summary: Create order
-      parameters:
-      - name: id
-        description: Order id
-        in: query
-        required: true
-        schema:
-          type: integer
-          default: 1
-      - name: user_id
-        description: User id
-        in: query
-        required: true
-        schema:
-          type: integer
-          default: 1
-      - name: accommodations
-        description: Accommodations
-        in: query
-        required: true
-        schema:
-          type: string
+      tags:
+        - accommodation_service
+      summary: Create accommodation
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                deadline:
+                  type: string
+                  example: '2024-04-06T16:00:00Z'
+                description:
+                  type: string
+                  example: '{{$randomCatchPhrase}}'
+                id:
+                  type: string
+                  example: '{{$randomInt}}'
+                name:
+                  type: string
+                  example: '{{$randomBsBuzz}}'
+                price:
+                  type: string
+                  example: '{{$randomInt}}'
       responses:
         '200':
-          description: Id
-          content:
-            application/json:
-              schema:
-                type: integer
-        404:
-          description: Error adding order
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        500:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          description: ''
+      security:
+        - jwtBearerAuth: []
+  /accommodation:
+    get:
+      summary: Get accommodation
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: string
+            example: '2'
+      responses:
+        '200':
+          description: ''
+      security:
+        - jwtBearerAuth: []
+    delete:
+      tags:
+        - accommodation_service
+      summary: accommodation delete
+      description: accommodation delete
+      operationId: accommodationDelete
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: string
+            example: '671'
+      responses:
+        '200':
+          description: ''
+      security:
+        - jwtBearerAuth: []
+  /accommodation/search:
+    get:
+      summary: Search accommodation 
+      parameters:
+        - name: name
+          in: query
+          schema:
+            type: string
+            example: Sample Accommodation 1
+      responses:
+        '200':
+          description: ''
+      security:
+        - jwtBearerAuth: []
 components:
   schemas:
-    id:
-      description: Id
+    accommodation_id:
+      description: Accommodation id
       type: integer
     accommodations:
       type: array
@@ -131,10 +108,8 @@ components:
           description: Error message
           type: string
   securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+      basicAuth:     
+        type: http
+        scheme: basic
 security:
-  - bearerAuth: []
-      
+  - basicAuth: []

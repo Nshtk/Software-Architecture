@@ -17,9 +17,13 @@ endif()
 include_directories(${Poco_INCLUDE_DIRS})
 
 add_executable(${ACCOMMODATION_BINARY} ./src/main.cpp
+							./src/Server/http_web_server.cpp
+							./src/Server/Requests/http_request_factory.cpp
+							./src/Server/Requests/Handlers/accommodation_handler.cpp
 							../../Database/src/Config/config.cpp
 							../../Database/src/database.cpp
-							../../Database/src/Models/Accommodation/accommodation.cpp)
+							../../Database/src/Models/Accommodation/accommodation.cpp
+							../../Common/src/Utility/utility.cpp)
 
 
 target_include_directories(${ACCOMMODATION_BINARY} PRIVATE "${CMAKE_BINARY_DIR}")

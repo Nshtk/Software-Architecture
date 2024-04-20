@@ -17,9 +17,13 @@ endif()
 include_directories(${Poco_INCLUDE_DIRS})
 
 add_executable(${ORDER_BINARY} ./src/main.cpp
+							./src/Server/http_web_server.cpp
+							./src/Server/Requests/http_request_factory.cpp
+							./src/Server/Requests/Handlers/order_handler.cpp
 							../../Database/src/Config/config.cpp
 							../../Database/src/database.cpp
-							../../Database/src/Models/Order/order.cpp)
+							../../Database/src/Models/Order/order.cpp
+							../../Common/src/Utility/utility.cpp)
 
 
 target_include_directories(${ORDER_BINARY} PRIVATE "${CMAKE_BINARY_DIR}")

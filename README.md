@@ -2,7 +2,7 @@
 ## Сайт заказа услуг
 
 ### Запуск
-`cd ./CourseWork && docker-compose up`
+`cd ./CourseWork && docker-compose up --build`
 ### Задание
 Приложение должно содержать следующие данные:
 - Пользователь
