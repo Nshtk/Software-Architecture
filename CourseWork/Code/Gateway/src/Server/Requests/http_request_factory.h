@@ -1,9 +1,7 @@
-#ifndef ACCOMMODATIONHANDLER_H
-#define ACCOMMODATIONHANDLER_H
+#ifndef HTTPREQUESTFACTORY_H
+#define HTTPREQUESTFACTORY_H
 
 #include <iostream>
-#include <iostream>
-#include <fstream>
 
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
@@ -12,7 +10,6 @@
 #include "Poco/Net/HTTPServerRequest.h"
 #include "Poco/Net/HTTPServerResponse.h"
 #include "Poco/Net/HTTPServerParams.h"
-#include "Poco/Net/HTMLForm.h"
 #include "Poco/Net/ServerSocket.h"
 #include "Poco/Timestamp.h"
 #include "Poco/DateTimeFormatter.h"
@@ -24,37 +21,35 @@
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
 
-#include "../../../../../../Database/src/Models/Accommodation/accommodation.h"
-#include "../../../../../../Common/src/Utility/utility.h"
+#include "Handlers/gateway_handler.h"
 
-using Poco::DateTimeFormat;
-using Poco::DateTimeFormatter;
-using Poco::ThreadPool;
-using Poco::Timestamp;
-using Poco::Net::HTMLForm;
+using Poco::Net::ServerSocket;
 using Poco::Net::HTTPRequestHandler;
 using Poco::Net::HTTPRequestHandlerFactory;
 using Poco::Net::HTTPServer;
-using Poco::Net::HTTPServerParams;
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
-using Poco::Net::NameValueCollection;
-using Poco::Net::ServerSocket;
-using Poco::Util::Application;
-using Poco::Util::HelpFormatter;
-using Poco::Util::Option;
-using Poco::Util::OptionCallback;
-using Poco::Util::OptionSet;
+using Poco::Net::HTTPServerParams;
+using Poco::Timestamp;
+using Poco::DateTimeFormatter;
+using Poco::DateTimeFormat;
+using Poco::ThreadPool;
 using Poco::Util::ServerApplication;
+using Poco::Util::Application;
+using Poco::Util::Option;
+using Poco::Util::OptionSet;
+using Poco::Util::OptionCallback;
+using Poco::Util::HelpFormatter;
 
-class AccommodationHandler : public HTTPRequestHandler
+class HTTPRequestFactory: public HTTPRequestHandlerFactory
 {
 private:
     std::string _format;
 public:
-    AccommodationHandler(const std::string &format) : _format(format)
+    HTTPRequestFactory(const std::string& format):  _format(format)
     {}
 
-    void handleRequest(HTTPServerRequest &request, HTTPServerResponse &response);
+    HTTPRequestHandler* createRequestHandler(const HTTPServerRequest& request);
 };
+
 #endif

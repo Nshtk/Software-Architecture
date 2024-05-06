@@ -13,6 +13,7 @@
 #include "user.h"
 #include "../../database.h"
 #include "../../Config/config.h"
+#include "../../Cache/cache.h"
 
 using namespace Poco::Data::Keywords;
 using Poco::Data::Session;
@@ -44,7 +45,7 @@ namespace database
             select << "SELECT id FROM public.\"User\" WHERE login=$1 and password=$2",
                 into(id),
                 use(login), use(password),
-                range(0, 1); //  iterate over result set one row at a time
+                range(0, 1);  //Iterate over result set one row at a time
             select.execute();
 
             Poco::Data::RecordSet rs(select);
@@ -90,6 +91,21 @@ namespace database
             std::cout << "statement:" << e.what() << std::endl;
         }
         return {};
+    }
+	 std::optional<User> User::getWithCache(long id)
+    {
+        try
+        {
+            std::string result;
+            if (database::Cache::getInstance().get(std::to_string(id), result))
+                return User(result);
+            else
+                return std::optional<User>();
+        }
+        catch (std::exception& err)
+        {
+            return std::optional<User>();
+        }
     }
     std::vector<User> User::getAll()
     {
@@ -222,6 +238,13 @@ namespace database
             std::cout << "statement:" << e.what() << std::endl;
             throw;
         }
+    }
+	void User::insertWithCache()
+    {
+        std::stringstream string_stream;
+        Poco::JSON::Stringifier::stringify(toJSON(), string_stream);
+        std::string message = string_stream.str();
+        database::Cache::getInstance().put(std::to_string(id), message);
     }
 	std::optional<User> User::modifyAdditionalInfo(long id, std::string first_name, std::string last_name, std::string email)	//TODO mofiyPassword()
 	{

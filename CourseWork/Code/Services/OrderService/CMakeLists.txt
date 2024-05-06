@@ -3,7 +3,11 @@ cmake_minimum_required(VERSION 3.2)
 project(order_service)
 SET (ORDER_BINARY "order_service")
 
+SET(STD_CXX "c++17")
 SET(CMAKE_CXX_STANDARD 17)
+SET (REDISCPP_FLAGS "-DREDISCPP_HEADER_ONLY=ON")
+SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -std=${STD_CXX} ${REDISCPP_FLAGS}")
+SET (CMAKE_CXX_FLAGS_RELEASE "-O3 -g0 -std=${STD_CXX} -Wall -DNDEBUG ${REDISCPP_FLAGS}")
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(OpenSSL)
@@ -21,6 +25,7 @@ add_executable(${ORDER_BINARY} ./src/main.cpp
 							./src/Server/Requests/http_request_factory.cpp
 							./src/Server/Requests/Handlers/order_handler.cpp
 							../../Database/src/Config/config.cpp
+							../../Database/src/Cache/cache.cpp
 							../../Database/src/database.cpp
 							../../Database/src/Models/Order/order.cpp
 							../../Common/src/Utility/utility.cpp)

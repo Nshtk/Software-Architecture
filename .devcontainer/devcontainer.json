@@ -4,7 +4,7 @@
 		"../CourseWork/docker-compose.yml",
 	],
 
-	"service": "user_service",
+	"service": "gateway",
 	"workspaceFolder": "/opt/CourseWork",
 
 	"customizations": {

@@ -19,6 +19,13 @@ RUN git clone -b poco-1.12.4-release https://github.com/pocoproject/poco.git &&\
     cmake --build . --config Release -- -j 12 &&\
     cmake --build . --target install -- -j 12 &&\
     cd && rm poco/* -rf 
+RUN git clone https://github.com/tdv/redis-cpp.git  &&\
+	cd redis-cpp &&\
+	mkdir cmake-build  &&\
+	cd cmake-build  &&\
+	cmake ..  &&\
+	make  &&\
+	make install
 RUN ldconfig
 
 WORKDIR /opt/Code

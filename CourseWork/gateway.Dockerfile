@@ -27,14 +27,14 @@ RUN git clone https://github.com/tdv/redis-cpp.git  &&\
 	make  &&\
 	make install
 RUN ldconfig
-	
+
 WORKDIR /opt/Code
 COPY ./Code/Common ./Common
 COPY ./Code/Database ./Database
-COPY ./Code/Services/UserService/src ./Services/UserService/src
-COPY ./Code/Services/UserService/CMakeLists.txt ./Services/UserService
-RUN mkdir ./Services/UserService/build
-RUN cmake -B ./Services/UserService/build -S ./Services/UserService
-RUN make -C ./Services/UserService/build
-ENTRYPOINT [ "./Services/UserService/build/user_service" ]
-#ENTRYPOINT ["tail", "-f", "/dev/null" ]
+COPY ./Code/Gateway/src ./Gateway/src
+COPY ./Code/Gateway/CMakeLists.txt ./Gateway
+RUN mkdir ./Gateway/build
+#RUN cmake -B ./Gateway/build -S ./Gateway
+#RUN make -C ./Gateway/build
+#ENTRYPOINT [ "./Gateway/build/gateway" ]
+ENTRYPOINT ["tail", "-f", "/dev/null" ]

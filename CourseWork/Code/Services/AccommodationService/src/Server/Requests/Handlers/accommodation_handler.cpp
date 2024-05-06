@@ -13,7 +13,7 @@ void AccommodationHandler::handleRequest(HTTPServerRequest &request, HTTPServerR
         std::cout << "scheme: " << scheme << " identity: " << info << std::endl;
         if(scheme == "Bearer") 
 		{
-            if(!extractPayload(info,id,login)) 
+            if(!extractPayload(info, id, login)) 
 			{
                 response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_FORBIDDEN);
                 response.setChunkedTransferEncoding(true);

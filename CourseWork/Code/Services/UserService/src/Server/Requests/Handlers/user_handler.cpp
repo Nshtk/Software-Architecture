@@ -91,20 +91,23 @@ void UserHandler::handleRequest(HTTPServerRequest &request, HTTPServerResponse &
         {
             std::string scheme;
             std::string info;
+			std::string login, password;
+			
             request.getCredentials(scheme, info);
             std::cout << "scheme: " << scheme << " identity: " << info << std::endl;
-            std::string login, password;
             if (scheme == "Basic")
             {
                 getIdentity(info, login, password);
                 if (auto id = database::User::authenticate(login, password))
                 {
-                    std::string token = generateToken(*id,login);
+                    std::string token = generateToken(*id, login);
                     response.setStatus(Poco::Net::HTTPResponse::HTTP_OK);
                     response.setChunkedTransferEncoding(true);
                     response.setContentType("application/json");
+					std::cout << "{ \"id\" : \"" << *id << "\", \"login\" : \"" << login << "\", \"Token\" : \""<< token <<"\"}";
                     std::ostream &ostr = response.send();
-                    ostr << "{ \"id\" : \"" << *id << "\", \"login\" : \"" << login << "\", \"Token\" : \""<< token <<"\"}" << std::endl;
+                    ostr << token;
+					ostr.flush();
                     return;
                 }
             }

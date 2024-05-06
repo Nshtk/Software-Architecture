@@ -744,6 +744,49 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "gateway",
+			"item": [
+				{
+					"name": "accommodation get with auth",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "sample_login_1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/accommodation?id=3",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"accommodation"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -782,6 +825,11 @@
 		{
 			"key": "order_url",
 			"value": "http://localhost:8082",
+			"type": "string"
+		},
+		{
+			"key": "gateway_url",
+			"value": "http://localhost:8083",
 			"type": "string"
 		}
 	]

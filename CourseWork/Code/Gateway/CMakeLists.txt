@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 
-project(user_service)
-SET (USER_BINARY "user_service")
+project(gateway)
+SET (GATEWAY_BINARY "gateway")
 
 SET(STD_CXX "c++17")
 SET(CMAKE_CXX_STANDARD 17)
@@ -20,23 +20,22 @@ endif()
 
 include_directories(${Poco_INCLUDE_DIRS})
 
-add_executable(${USER_BINARY} ./src/main.cpp
+add_executable(${GATEWAY_BINARY} ./src/main.cpp
 							./src/Server/http_web_server.cpp
 							./src/Server/Requests/http_request_factory.cpp
-							./src/Server/Requests/Handlers/user_handler.cpp
+							./src/Server/Requests/Handlers/gateway_handler.cpp
 							../../Database/src/Config/config.cpp
 							../../Database/src/Cache/cache.cpp
 							../../Database/src/database.cpp
-							../../Database/src/Models/User/user.cpp
 							../../Common/src/Utility/utility.cpp)
 
 
-target_include_directories(${USER_BINARY} PRIVATE "${CMAKE_BINARY_DIR}")
-target_compile_options(${USER_BINARY} PRIVATE -Wall -Wextra -pedantic)
-set_target_properties(${USER_BINARY} PROPERTIES LINKER_LANGUAGE CXX)
-set_target_properties(${USER_BINARY} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+target_include_directories(${GATEWAY_BINARY} PRIVATE "${CMAKE_BINARY_DIR}")
+target_compile_options(${GATEWAY_BINARY} PRIVATE -Wall -Wextra -pedantic)
+set_target_properties(${GATEWAY_BINARY} PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(${GATEWAY_BINARY} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 
-target_link_libraries(${USER_BINARY} PRIVATE 
+target_link_libraries(${GATEWAY_BINARY} PRIVATE 
                              ${CMAKE_THREAD_LIBS_INIT} 
                              ${Poco_LIBRARIES}
                              "PocoDataPostgreSQL")

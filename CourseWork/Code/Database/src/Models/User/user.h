@@ -42,6 +42,7 @@ namespace database
 			}
 
             static std::optional<User> get(long id);
+			static std::optional<User> getWithCache(long id);
 			static std::optional<User> modifyAdditionalInfo(long id, std::string first_name, std::string last_name, std::string email);
 			static void remove(long id);
             static std::optional<long> authenticate(std::string& login, std::string& password);
@@ -50,6 +51,7 @@ namespace database
             static std::vector<User> searchByName(std::string first_name,std::string last_name);
             
 			void insert();
+			void insertWithCache();
             Poco::JSON::Object::Ptr toJSON() const;
     };
 }

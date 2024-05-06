@@ -1,15 +1,15 @@
 version: '3.2'
 
 services:
-  user_service:
+  gateway:
     tty: true
-    container_name: user_service
+    container_name: gateway
     volumes:
       - ./Code:/opt/CourseWork/Code
       - ./.vscode:/opt/CourseWork/.vscode
     build:
       context: .
-      dockerfile: ./user.Dockerfile
+      dockerfile: ./gateway.Dockerfile
     environment:
       - DB_HOST=postgres_db
       - DB_PORT=5432
@@ -18,7 +18,32 @@ services:
       - DB_DATABASE=sa-accommodation-service
       - MONGO_HOST=mongo_db
       - MONGO_PORT=27017
+      - MONGO_DATABASE=sa-accommodation-service-mongo 
+      - CACHE=cache:6379
+      - USER_ADDRESS=http://user_service:8081
+      - ACCOMMODATION_ADDRESS=http://accommodation_service:8081
+      - ORDER_ADDRESS=http://order_service:8081
+    ports:
+      - 8083:8081
+    networks:
+      - accommodation_network
+      
+  user_service:
+    tty: true
+    container_name: user_service
+    build:
+      context: .
+      dockerfile: ./user.Dockerfile
+    environment:
+      - DB_HOST=postgres_db   # container name
+      - DB_PORT=5432
+      - DB_LOGIN=service_admin
+      - DB_PASSWORD=123456789
+      - DB_DATABASE=sa-accommodation-service
+      - MONGO_HOST=mongo_db
+      - MONGO_PORT=27017
       - MONGO_DATABASE=sa-accommodation-service-mongo
+      - CACHE=cache:6379
     depends_on:
       postgres_db:
         condition: service_healthy
@@ -34,7 +59,7 @@ services:
       context: .
       dockerfile: ./accommodation.Dockerfile
     environment:
-      - DB_HOST=postgres_db   # container name
+      - DB_HOST=postgres_db
       - DB_PORT=5432
       - DB_LOGIN=service_admin
       - DB_PASSWORD=123456789
@@ -42,6 +67,7 @@ services:
       - MONGO_HOST=mongo_db
       - MONGO_PORT=27017
       - MONGO_DATABASE=sa-accommodation-service-mongo 
+      - CACHE=cache:6379
     depends_on:
       postgres_db:
         condition: service_healthy
@@ -57,7 +83,7 @@ services:
       context: .
       dockerfile: ./order.Dockerfile
     environment:
-      - DB_HOST=postgres_db   # container name
+      - DB_HOST=postgres_db
       - DB_PORT=5432
       - DB_LOGIN=service_admin
       - DB_PASSWORD=123456789
@@ -65,6 +91,7 @@ services:
       - MONGO_HOST=mongo_db
       - MONGO_PORT=27017
       - MONGO_DATABASE=sa-accommodation-service-mongo 
+      - CACHE=cache:6379
     depends_on:
       postgres_db:
         condition: service_healthy
@@ -111,8 +138,21 @@ services:
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
 
+  cache:
+    container_name: cache
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning 
+    networks:
+      - accommodation_network
+    volumes: 
+      - cache_data:/data
+
 volumes:
   postgresdb_data:
+  cache_data:
   mongodb_data:
 
 networks:

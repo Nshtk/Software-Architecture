@@ -97,7 +97,23 @@
 		"numbers": "cpp",
 		"sstream": "cpp",
 		"cfenv": "cpp",
-		"cinttypes": "cpp"
+		"cinttypes": "cpp",
+		"csignal": "cpp",
+		"any": "cpp",
+		"bitset": "cpp",
+		"codecvt": "cpp",
+		"complex": "cpp",
+		"condition_variable": "cpp",
+		"coroutine": "cpp",
+		"forward_list": "cpp",
+		"source_location": "cpp",
+		"future": "cpp",
+		"mutex": "cpp",
+		"semaphore": "cpp",
+		"stop_token": "cpp",
+		"thread": "cpp",
+		"typeindex": "cpp",
+		"variant": "cpp"
 	},
 	"cmake.buildDirectory": "/home/vscode/build",
 	"cmake.configureArgs": ["-DCMAKE_TOOLCHAIN_FILE=OFF"],
@@ -139,5 +155,6 @@
 				},
 			]
 		},
-	}
+	},
+	"hide-files.files": []
 }
