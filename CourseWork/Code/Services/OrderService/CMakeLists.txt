@@ -28,6 +28,7 @@ add_executable(${ORDER_BINARY} ./src/main.cpp
 							../../Database/src/Cache/cache.cpp
 							../../Database/src/database.cpp
 							../../Database/src/Models/Order/order.cpp
+							../../Database/src/Models/Accommodation/accommodation.cpp
 							../../Common/src/Utility/utility.cpp)
 
 

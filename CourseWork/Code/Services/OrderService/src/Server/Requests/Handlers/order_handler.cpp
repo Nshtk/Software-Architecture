@@ -22,7 +22,7 @@ void OrderHandler::handleRequest(HTTPServerRequest &request, HTTPServerResponse 
                 root->set("type", "/errors/not_authorized");
                 root->set("title", "Internal exception");
                 root->set("status", "403");
-                root->set("detail", "Order not authorized");
+                root->set("detail", "User not authorized");
                 root->set("instance", "/Order");
                 std::ostream &ostr = response.send();
                 Poco::JSON::Stringifier::stringify(root, ostr);
@@ -39,7 +39,7 @@ void OrderHandler::handleRequest(HTTPServerRequest &request, HTTPServerResponse 
 					std::vector<database::Order::Accommodation> accommodations;
 					accommodations.push_back(database::Order::Accommodation(atol(form.get("accommodation_id").c_str()), form.get("accommodation_name")));
             	    database::Order order(atol(form.get("id").c_str()), atol(form.get("user_id").c_str()), accommodations);
-            	    bool check_result = true;
+            	    auto check_result = database::Accommodation::get(atol(form.get("accommodation_id").c_str()));
             	    std::string message;
             	    std::string reason;
             	    if (check_result)
