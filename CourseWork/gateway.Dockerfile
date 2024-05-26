@@ -33,7 +33,7 @@ COPY ./Code/Common ./Common
 COPY ./Code/Database ./Database
 COPY ./Code/Gateway/src ./Gateway/src
 COPY ./Code/Gateway/CMakeLists.txt ./Gateway
-RUN mkdir ./Gateway/build
+#RUN mkdir ./Gateway/build
 #RUN cmake -B ./Gateway/build -S ./Gateway
 #RUN make -C ./Gateway/build
 #ENTRYPOINT [ "./Gateway/build/gateway" ]

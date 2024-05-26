@@ -22,7 +22,7 @@
 		"foreground": "#ffffff",
 		"fontWeight": "bold"
 	},
-	"cmake.sourceDirectory": "/opt/lab2/src",
+	"cmake.sourceDirectory": "/opt/CourseWork/Code/Gateway",
 	"files.associations": {
 		"algorithm": "cpp",
 		"cmath": "cpp",

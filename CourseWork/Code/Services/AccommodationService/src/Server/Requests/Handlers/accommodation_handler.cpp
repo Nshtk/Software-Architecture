@@ -187,7 +187,7 @@ void AccommodationHandler::handleRequest(HTTPServerRequest &request, HTTPServerR
     root->set("title", "Internal exception");
     root->set("status", Poco::Net::HTTPResponse::HTTPStatus::HTTP_NOT_FOUND);
     root->set("detail", "request not found");
-    root->set("instance", "/Accommodation");
+    root->set("instance", "/accommodation");
     std::ostream &ostr = response.send();
     Poco::JSON::Stringifier::stringify(root, ostr);
 }

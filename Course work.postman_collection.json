@@ -749,7 +749,39 @@
 			"name": "gateway",
 			"item": [
 				{
-					"name": "accommodation get with auth",
+					"name": "user auth",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "sample_login_1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/auth",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "accommodation get",
 					"request": {
 						"auth": {
 							"type": "basic",
@@ -780,6 +812,204 @@
 								{
 									"key": "id",
 									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "accommodation create",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "sample_login_1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "{{$randomInt}}",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "{{$randomBsBuzz}}",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "{{$randomCatchPhrase}}",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "{{$randomInt}}",
+									"type": "text"
+								},
+								{
+									"key": "deadline",
+									"value": "2024-04-06T16:00:00Z",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{gateway_url}}/accommodation/create",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"accommodation",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "accommodation search",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "sample_login_1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/accommodation/search?name=Sample Accommodation 1",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"accommodation",
+								"search"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Sample Accommodation 1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "order create",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "sample_login_1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "6",
+									"type": "text"
+								},
+								{
+									"key": "user_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "accommodation_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "accommodation_name",
+									"value": "Sample Accommodation 1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{gateway_url}}/order/create",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"order",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "order get",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "sample_login_1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{gateway_url}}/order?user_id=1",
+							"host": [
+								"{{gateway_url}}"
+							],
+							"path": [
+								"order"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1"
 								}
 							]
 						}

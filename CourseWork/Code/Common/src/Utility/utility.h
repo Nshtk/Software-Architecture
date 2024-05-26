@@ -10,7 +10,7 @@
 #include "Poco/JWT/Signer.h"
 
 bool getIdentity(const std::string identity, std::string &login, std::string &password);
-std::string getJWTKey();
+std::string getTokenSecret();
 std::string generateToken(long &id, std::string &login);
 bool extractPayload(std::string &jwt_token, long &id, std::string &login);
 

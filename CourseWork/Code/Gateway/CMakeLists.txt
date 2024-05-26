@@ -24,6 +24,7 @@ add_executable(${GATEWAY_BINARY} ./src/main.cpp
 							./src/Server/http_web_server.cpp
 							./src/Server/Requests/http_request_factory.cpp
 							./src/Server/Requests/Handlers/gateway_handler.cpp
+							./src/Server/Tools/circuit_breaker.cpp
 							../../Database/src/Config/config.cpp
 							../../Database/src/Cache/cache.cpp
 							../../Database/src/database.cpp

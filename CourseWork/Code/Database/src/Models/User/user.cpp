@@ -74,7 +74,7 @@ namespace database
             select << "SELECT id, login, password, first_name, last_name, email FROM public.\"User\" WHERE id=$1",
 				into(user.id), into(user.first_name), into(user.last_name), into(user.email), into(user.login), into(user.password),
             	use(id),
-                range(0, 1); //  iterate over result set one row at a time
+                range(0, 1);
 
             select.execute();
             Poco::Data::RecordSet rs(select);
@@ -96,8 +96,8 @@ namespace database
     {
         try
         {
-            std::string result;
-            if (database::Cache::getInstance().get(std::to_string(id), result))
+            std::string result=database::Cache::Instance.get(std::to_string(id));
+            if (!result.empty())
                 return User(result);
             else
                 return std::optional<User>();
@@ -118,7 +118,7 @@ namespace database
 
             select << "SELECT id, login, password, first_name, last_name, email FROM public.\"User\"", 
 				into(user.id), into(user.first_name), into(user.last_name), into(user.email), into(user.login), into(user.password),
-                range(0, 1); //  iterate over result set one row at a time
+                range(0, 1); 
 
             while (!select.done())
             {
@@ -152,7 +152,7 @@ namespace database
             select << "SELECT id, login, password, first_name, last_name, email FROM public.\"User\" WHERE login = $1",
                 into(user.id), into(user.login), into(user.password), into(user.first_name), into(user.last_name), into(user.email),
                 use(login),
-                range(0, 1); //  iterate over result set one row at a time
+                range(0, 1);
 
 			Poco::Data::RecordSet rs(select);
             if (rs.moveFirst())
@@ -184,7 +184,7 @@ namespace database
             select << "SELECT id, login, password, first_name, last_name, email FROM public.\"User\" WHERE first_name LIKE $1 and last_name LIKE $2",
                 into(user.id), into(user.login), into(user.password), into(user.first_name), into(user.last_name), into(user.email),
                 use(first_name), use(last_name),
-                range(0, 1); //  iterate over result set one row at a time
+                range(0, 1);
             while (!select.done())
                 if (select.execute())
                     result.push_back(user);
@@ -244,7 +244,7 @@ namespace database
         std::stringstream string_stream;
         Poco::JSON::Stringifier::stringify(toJSON(), string_stream);
         std::string message = string_stream.str();
-        database::Cache::getInstance().put(std::to_string(id), message);
+        database::Cache::Instance.insert(std::to_string(id), message, "60");
     }
 	std::optional<User> User::modifyAdditionalInfo(long id, std::string first_name, std::string last_name, std::string email)	//TODO mofiyPassword()
 	{

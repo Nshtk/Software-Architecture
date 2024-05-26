@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <memory>
+#include <mutex>
 
 namespace database
 {
@@ -11,11 +12,12 @@ namespace database
     {
         private:
             std::shared_ptr<std::iostream> _stream;
+			std::mutex _mtx;
             Cache();
         public:
-            static Cache getInstance();
-            void put(const std::string & id, const std::string& val);
-            bool get(const std::string & id, std::string& val);
+			static Cache Instance;
+            void insert(const std::string& key, const std::string& val, const std::string& lifetime);
+            std::string get(const std::string& key);
     };
 }
 

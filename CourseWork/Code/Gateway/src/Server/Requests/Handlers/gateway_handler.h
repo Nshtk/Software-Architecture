@@ -31,6 +31,7 @@
 
 #include "../../../../../Common/src/Utility/utility.h"
 #include "../../../../../Database/src/Cache/cache.h"
+#include "../../Tools/circuit_breaker.h"
 
 using Poco::DateTimeFormat;
 using Poco::DateTimeFormatter;
@@ -57,8 +58,7 @@ public:
     void handleRequest(HTTPServerRequest &request, HTTPServerResponse &response);
 protected:
     inline std::string getKey(const std::string &method, const std::string &base_path, const std::string &query, const std::string &basic_auth);
-    std::string getFromCache(const std::string &method, const std::string &base_path, const std::string &query, const std::string &basic_auth);
-    void insertToCache(const std::string &method, const std::string &base_path, const std::string &query, const std::string &basic_auth,const std::string &result);
     std::string sendRequest(const std::string &method, const std::string &base_path, const std::string &query, const std::string &basic_auth, const std::string &token, const std::string &body);
+	void getResponseFromService(const std::string& service_name, HTTPServerRequest& request, HTTPServerResponse& response, std::string& base_url, std::string& auth_info);
 };
 #endif

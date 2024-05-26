@@ -14,10 +14,8 @@ bool getIdentity(const std::string identity, std::string &login, std::string &pa
 	
     return true;
 }
-std::string getJWTKey() 
+std::string getTokenSecret() 
 {
-    if (std::getenv("JWT_KEY") != nullptr)
-        return std::getenv("JWT_KEY");
     return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTI2OTEyMDguNDM4MjI5LCJpZCI6MSwibG9naW4iOiJzYW1wbGVfbG9naW5fMSIsInN1YiI6ImxvZ2luIn0";
 }
 std::string generateToken(long &id, std::string &login) 
@@ -29,7 +27,7 @@ std::string generateToken(long &id, std::string &login)
     token.payload().set("id", id);
     token.setIssuedAt(Poco::Timestamp());
 
-    Poco::JWT::Signer signer(getJWTKey());
+    Poco::JWT::Signer signer(getTokenSecret());
     return signer.sign(token, Poco::JWT::Signer::ALGO_HS256);
 }
 bool extractPayload(std::string &jwt_token, long &id, std::string &login) 
@@ -37,7 +35,7 @@ bool extractPayload(std::string &jwt_token, long &id, std::string &login)
     if (jwt_token.length() == 0) 
         return false;
 
-    Poco::JWT::Signer signer(getJWTKey());
+    Poco::JWT::Signer signer(getTokenSecret());
     try 
 	{
         Poco::JWT::Token token = signer.verify(jwt_token);
