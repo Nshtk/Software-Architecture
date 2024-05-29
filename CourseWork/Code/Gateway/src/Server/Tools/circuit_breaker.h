@@ -4,8 +4,8 @@
 #include <iostream>
 
 #define FAIL_COUNT 5
-#define TIME_LIMIT 5
-#define SUCCESS_LIMIT 5
+#define SUCCESS_COUNT 5
+#define TIME_LIMIT 10
 
 class CircuitBreaker
 {
@@ -25,7 +25,7 @@ class CircuitBreaker
 	};
 	
 private:
-    std::map<std::string, ServiceState> services;
+    std::map<std::string, ServiceState> services={{"user_service", ServiceState()}, {"accommodation_service", ServiceState()}, {"order_service", ServiceState()}};
 
 public:
 	static CircuitBreaker Instance;

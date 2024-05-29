@@ -69,11 +69,19 @@ void GatewayHandler::getResponseFromService(const std::string& service_name, HTT
     	    ostr << real_result;
     	    ostr.flush();
 			
-			database::Cache::Instance.insert(getKey(request.getMethod(), base_url, request.getURI(), auth_info), auth_info, "60");
+			//database::Cache::Instance.insert(getKey(request.getMethod(), base_url, request.getURI(), auth_info), real_result, "60");
 			CircuitBreaker::Instance.success(service_name);
     	}
 		else
+		{
+			response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_SERVICE_UNAVAILABLE);
+    	    response.setChunkedTransferEncoding(true);
+    	    response.setContentType("application/json");
+    	    std::ostream &ostr = response.send();
+    	    ostr << real_result;
+    	    ostr.flush();
 		 	CircuitBreaker::Instance.fail(service_name);
+		}
 	}
 	else
 	{

@@ -6,6 +6,7 @@ bool CircuitBreaker::isServiceAvailable(const std::string& service_name)
 {
     if (services.find(service_name) == std::end(services))
         return true;
+		
     ServiceState &ss = services[service_name];
     std::cout << "# circuit breaker: state ["<< ((int)ss.state)<<"] fail ["<< ss.fail_count <<"] success ["<< ss.success_count<<"]" << std::endl;
     switch (ss.state)
@@ -68,7 +69,7 @@ void CircuitBreaker::success(const std::string& service_name)
         if (ss.state == State::semi_open)
         {
             ++ss.success_count;
-            if (ss.success_count > SUCCESS_LIMIT)
+            if (ss.success_count > SUCCESS_COUNT)
             {
                 std::cout << "# circuit breaker: success limit reached" << std::endl;
                 ss.state = State::close;
